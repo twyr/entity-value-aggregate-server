@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1305.5 files/s, 233654.0 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.05 s (1446.1 files/s, 259169.9 lines/s)
 --- | ---
 
 File|blank|comment|code
@@ -13,7 +13,7 @@ File|blank|comment|code
 ./knex_migrations/migrations/20221213124617-tenant-user-schema.cjs|30|6|228
 ./knex_migrations/migrations/20221213119018-master-table-schema.cjs|17|5|185
 ./base_classes/surface.js|47|139|171
-./package.json|0|0|167
+./package.json|0|0|169
 ./source/repositories/runtime/sql_database/index.js|42|117|148
 ./base_classes/domain.js|45|98|146
 ./knex_migrations/seeds/000-master-seed.cjs|29|15|145
@@ -21,7 +21,7 @@ File|blank|comment|code
 ./source/repositories/runtime/auth/helpers/user-session-cache.js|19|31|124
 ./source/repositories/runtime/logger/index.js|31|117|124
 ./source/repositories/runtime/cache/index.js|40|146|116
-./source/domains/portal/bounded_contexts/session_manager/middlewares/session.js|32|103|113
+./source/domains/portal/bounded_contexts/session_manager/middlewares/session.js|32|103|115
 ./eslint.config.js|11|42|108
 ./source/repositories/runtime/mongodb/index.js|32|118|105
 ./source/domains/portal/index.js|18|120|104
@@ -34,12 +34,12 @@ File|blank|comment|code
 ./source/index.js|30|45|89
 ./source/repositories/runtime/auth/index.js|26|110|89
 ./base_classes/middleware.js|23|129|87
+./source/domains/portal/bounded_contexts/session_manager/surfaces/command/main.js|23|103|83
 ./knex_migrations/migrations/20221213123852-user-schema.cjs|11|2|82
 ./source/domains/admin/bounded_contexts/tenant/surfaces/query/roles.js|19|106|77
 ./source/domains/admin/index.js|14|117|77
 ./source/application-server.js|24|95|76
 ./source/domains/portal/bounded_contexts/profile/surfaces/query/contact.js|18|103|75
-./source/domains/portal/bounded_contexts/session_manager/surfaces/command/main.js|20|103|71
 ./source/repositories/runtime/renderer/index.js|19|128|68
 ./source/repositories/runtime/audit/audit-trail-model.js|12|33|59
 ./source/domains/portal/bounded_contexts/profile/surfaces/query/basics.js|15|103|57
@@ -48,7 +48,7 @@ File|blank|comment|code
 ./knex_migrations/migrations/20221220091339-tenant-artifact-user-permissions.cjs|2|0|52
 ./custom_loaders/baseclass-loader.js|11|32|50
 ./source/repositories/init/configuration/index.js|13|121|49
-./knex_migrations/seeds/001-artifact-seed.cjs|7|4|46
+./knex_migrations/seeds/001-artifact-seed.cjs|7|4|45
 ./source/domains/portal/models/relational/tenant.cjs|6|26|43
 ./source/domains/portal/models/relational/user.cjs|6|26|43
 ./.jsdocrc.json|1|0|41
@@ -78,15 +78,15 @@ File|blank|comment|code
 ./source/domains/portal/templates/email/new-user.ejs|0|0|2
 ./source/domains/portal/templates/email/update-user.ejs|0|0|2
 --------|--------|--------|--------
-SUM:|1445|4406|7393
-cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1305.5 files/s, 233654.0 lines/s)
+SUM:|1448|4406|7408
+cloc|github.com/AlDanial/cloc v 1.96  T=0.05 s (1446.1 files/s, 259169.9 lines/s)
 --- | ---
 
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
-JavaScript|66|1439|4406|7117
-JSON|5|4|0|256
+JavaScript|66|1442|4406|7130
+JSON|5|4|0|258
 Markdown|1|2|0|16
 EJS|2|0|0|4
 --------|--------|--------|--------|--------
-SUM:|74|1445|4406|7393
+SUM:|74|1448|4406|7408

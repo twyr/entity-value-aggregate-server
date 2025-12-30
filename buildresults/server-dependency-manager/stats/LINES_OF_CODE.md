@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.96  T=0.01 s (754.7 files/s, 48370.5 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (654.7 files/s, 41959.7 lines/s)
 --- | ---
 
 File|blank|comment|code
@@ -16,7 +16,7 @@ File|blank|comment|code
 ./index.js|1|8|1
 --------|--------|--------|--------
 SUM:|50|163|492
-cloc|github.com/AlDanial/cloc v 1.96  T=0.01 s (754.7 files/s, 48370.5 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (654.7 files/s, 41959.7 lines/s)
 --- | ---
 
 Language|files|blank|comment|code
