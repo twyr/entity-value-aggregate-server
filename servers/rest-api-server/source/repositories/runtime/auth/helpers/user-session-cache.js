@@ -6,7 +6,7 @@ const getUserDetails = async function getUserDetails(
 ) {
 	// Step 1: Get the details from the cache, if present
 	let cachedUser = await cacheRepository?.get?.(
-		`entity!value!aggregate!user!${userId}!basics`
+		`twyr!entity!aggregate!server!user!${userId}!basics`
 	);
 	if (cachedUser) {
 		cachedUser = JSON?.parse?.(cachedUser);
@@ -32,11 +32,11 @@ const getUserDetails = async function getUserDetails(
 	// Step 4: Set the details in the cache for the future...
 	const cacheMulti = await cacheRepository?.multi?.();
 	cacheMulti?.set?.(
-		`entity!value!aggregate!user!${userId}!basics`,
+		`twyr!entity!aggregate!server!user!${userId}!basics`,
 		JSON?.stringify?.(cachedUser)
 	);
 	cacheMulti?.expire?.(
-		`entity!value!aggregate!user!${userId}!basics`,
+		`twyr!entity!aggregate!server!user!${userId}!basics`,
 		serverEnvironment === 'development' ? 300 : 86_400
 	);
 
@@ -54,7 +54,7 @@ const getTenantUserPermissions = async function getTenantUserPermissions(
 ) {
 	// Step 1: Get the details from the cache, if present
 	let cachedPermissions = await cacheRepository?.get?.(
-		`entity!value!aggregate!user!${userId}!${tenantId}!permissions`
+		`twyr!entity!aggregate!server!user!${userId}!${tenantId}!permissions`
 	);
 	if (cachedPermissions) {
 		cachedPermissions = JSON?.parse?.(cachedPermissions);
@@ -63,14 +63,14 @@ const getTenantUserPermissions = async function getTenantUserPermissions(
 
 	// Step 2: Get the list of permissions from the cache / database
 	let allPermissions = await cacheRepository?.get?.(
-		`entity!value!aggregate!server!permissions`
+		`twyr!entity!aggregate!server!permissions`
 	);
 
 	if (allPermissions) {
 		allPermissions = JSON?.parse?.(allPermissions);
 	} else {
 		let serverPermissions = await databaseRepository?.raw?.(
-			`SELECT id, name, implies_permissions FROM module_permissions`
+			`SELECT id, name, implies_permissions FROM artifact_permissions`
 		);
 
 		allPermissions = [];
@@ -83,7 +83,7 @@ const getTenantUserPermissions = async function getTenantUserPermissions(
 		});
 
 		await cacheRepository?.set?.(
-			`entity!value!aggregate!server!permissions`,
+			`twyr!entity!aggregate!server!permissions`,
 			JSON?.stringify?.(allPermissions)
 		);
 	}
@@ -111,11 +111,11 @@ const getTenantUserPermissions = async function getTenantUserPermissions(
 	// Step 5: Set the details in the cache for the future...
 	const cacheMulti = await cacheRepository?.multi?.();
 	cacheMulti?.set?.(
-		`entity!value!aggregate!user!${userId}!${tenantId}!permissions`,
+		`twyr!entity!aggregate!server!user!${userId}!${tenantId}!permissions`,
 		JSON?.stringify?.(tenantUserPermissions)
 	);
 	cacheMulti?.expire?.(
-		`entity!value!aggregate!user!${userId}!${tenantId}!permissions`,
+		`twyr!entity!aggregate!server!user!${userId}!${tenantId}!permissions`,
 		serverEnvironment === 'development' ? 300 : 86_400
 	);
 

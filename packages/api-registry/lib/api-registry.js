@@ -114,8 +114,8 @@ export class APIRegistry extends EVASBaseClass {
 
 		// Step 1: Check if we can resolve it locally...
 		let apis = await this?._find?.(patternLocal);
-		if (apis?.length > 0) return apis;
-		if (!this.#parentRegistry) return apis;
+		if (apis?.length > 0) return [...apis];
+		if (!this.#parentRegistry) return [...apis];
 
 		// Step 2: Ask the parent to resolve it...
 		apis = await this.#parentRegistry?.resolve?.(pattern);

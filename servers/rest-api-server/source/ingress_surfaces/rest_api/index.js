@@ -27,8 +27,8 @@ const DEFAULT_POWERED_BY = 'Twyr';
 // const DEFAULT_RATE_LIMIT_MAX_REQUESTS = 30;
 
 const DEFAULT_SESSION_DOMAIN = '127.0.0.1';
-const DEFAULT_SESSION_ENCRYPTION_KEY = 'Th1s!sTheTwyrD0ct0rEntityServer';
-const DEFAULT_SESSION_KEY = 'twyr!twyr!entity!aggregate!server';
+const DEFAULT_SESSION_ENCRYPTION_KEY = 'Th1s!sTheTwyrEntityAggregateServer';
+const DEFAULT_SESSION_KEY = 'twyr!entity!aggregate!server';
 const DEFAULT_SESSION_MAX_AGE = 86_400_000;
 const DEFAULT_SERVER_PORT = 9090;
 
@@ -521,7 +521,7 @@ class RestApi extends EVASBaseIngressSurface {
 		let tenant = ctxt?.get?.['tenant'];
 		if (!tenant) {
 			tenant = await cache?.get?.(
-				`twyr!restapi!tenant!${tenantSubDomain}`
+				`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`
 			);
 		}
 
@@ -561,11 +561,11 @@ class RestApi extends EVASBaseIngressSurface {
 		// Step 7: Store tenant stuff in the cache for faster access from the next request
 		const cacheMulti = await cache?.multi?.();
 		cacheMulti?.set?.(
-			`twyr!restapi!tenant!${tenantSubDomain}`,
+			`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`,
 			JSON?.stringify?.(tenant)
 		);
 		cacheMulti?.expire?.(
-			`twyr!restapi!tenant!${tenantSubDomain}`,
+			`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`,
 			serverEnvironment === 'development' ? 3600 : 86_400
 		);
 

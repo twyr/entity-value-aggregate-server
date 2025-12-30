@@ -151,9 +151,11 @@ export class Session extends BaseMiddleware {
 
 		await ctxt?.logout?.();
 
-		await cache?.del?.(`twyr!restapi!user!${userId}!basics`);
 		await cache?.del?.(
-			`twyr!restapi!user!${userId}!${tenantId}!permissions`
+			`twyr!entity!aggregate!server!user!${userId}!basics`
+		);
+		await cache?.del?.(
+			`twyr!entity!aggregate!server!user!${userId}!${tenantId}!permissions`
 		);
 
 		return { status: 200, body: 'Logged out' };

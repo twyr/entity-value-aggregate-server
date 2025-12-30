@@ -8,8 +8,8 @@ module.exports = {
 		connection: {
 			host: '127.0.0.1',
 			database: 'twyr',
-			user: 'postgres',
-			password: 'postgres'
+			user: 'twyr',
+			password: 'twyr'
 		},
 
 		migrations: {

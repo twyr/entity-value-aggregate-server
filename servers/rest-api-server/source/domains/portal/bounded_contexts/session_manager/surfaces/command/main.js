@@ -86,7 +86,15 @@ export class Main extends BaseSurface {
 		if (!ctxt?.isAuthenticated?.()) return;
 
 		const apiRegistry = this?.domainInterface?.apiRegistry;
-		const postLoginStatus = await apiRegistry?.execute?.('LOGIN', {
+
+		let postLoginProcessor = await apiRegistry?.resolve?.(
+			'SESSIONMANAGER::LOGIN'
+		);
+		if (postLoginProcessor?.length === 1) {
+			postLoginProcessor = postLoginProcessor?.shift?.();
+		}
+
+		const postLoginStatus = await postLoginProcessor?.({
 			tenant: ctxt?.state?.tenant,
 			user: ctxt?.state?.user
 		});
@@ -99,7 +107,14 @@ export class Main extends BaseSurface {
 		if (!ctxt.isAuthenticated()) throw new Error(`No active session`);
 
 		const apiRegistry = this?.domainInterface?.apiRegistry;
-		const logoutStatus = await apiRegistry?.execute?.('LOGOUT', ctxt);
+		let logoutProcessor = await apiRegistry?.resolve?.(
+			'SESSIONMANAGER::LOGOUT'
+		);
+		if (logoutProcessor?.length === 1) {
+			logoutProcessor = logoutProcessor?.shift?.();
+		}
+
+		const logoutStatus = await logoutProcessor?.(ctxt);
 
 		ctxt.status = logoutStatus?.status;
 		ctxt.body = logoutStatus?.body;
