@@ -1,4 +1,22 @@
 {
-	"projectName": "entity-value-aggregate-server",
-	"projectOwner": "twyr"
+  "projectName": "entity-value-aggregate-server",
+  "projectOwner": "twyr",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "shadyvd",
+      "name": "Vish Desai",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5027975?v=4",
+      "profile": "http://twyr.github.io",
+      "contributions": [
+        "code",
+        "projectManagement"
+      ]
+    }
+  ]
 }
