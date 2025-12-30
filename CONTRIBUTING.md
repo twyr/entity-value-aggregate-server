@@ -36,7 +36,6 @@ git clone https://github.com/twyr/entity-value-aggregate-server entity-value-agg
 Instructions for installing the latest version of VSCode on Debian / Ubuntu
 based systems can be found here: [Installing VSCode on Linux](https://code.visualstudio.com/docs/setup/linux)
 
-
 ##### Adding Extensions
 
 The following extensions are recommended for a good developer experience
@@ -276,7 +275,17 @@ CREATE ROLE
 postgres=# CREATE DATABASE twyr OWNER twyr ENCODING 'UTF8' LC_COLLATE='en_US.utf8' LC_CTYPE='en_US.utf8' TEMPLATE template0;
 CREATE DATABASE
 
-postgres=#
+postgres=# ALTER ROLE twyr NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION;
+ALTER ROLE
+
+postgres=# ALTER ROLE twyr SET timezone TO 'Asia/Kolkata';
+ALTER ROLE
+
+postgres=# REVOKE ALL ON DATABASE twyr FROM PUBLIC;
+REVOKE
+
+postgres=# GRANT ALL ON DATABASE twyr TO twyr;
+GRANT
 ```
 
 Next, run the following commands from the `Terminal` to setup the database:
