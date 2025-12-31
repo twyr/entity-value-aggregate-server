@@ -93,20 +93,16 @@ class RestApi extends EVASBaseIngressSurface {
 			keys: configuration?.['SESSION_KEYS'] ?? [
 				DEFAULT_SESSION_ENCRYPTION_KEY
 			],
-			config: {
-				autoCommit: true,
-				domain:
-					configuration?.['SESSION_DOMAIN'] ?? DEFAULT_SESSION_DOMAIN,
-				key: configuration?.['SESSION_KEY'] ?? DEFAULT_SESSION_KEY,
-				maxAge:
-					configuration?.['SESSION_MAX_AGE'] ??
-					DEFAULT_SESSION_MAX_AGE,
-				overwrite: true,
-				httpOnly: true,
-				signed: true,
-				rolling: true,
-				renew: true
-			}
+			autoCommit: true,
+			domain: configuration?.['SESSION_DOMAIN'] ?? DEFAULT_SESSION_DOMAIN,
+			key: configuration?.['SESSION_KEY'] ?? DEFAULT_SESSION_KEY,
+			maxAge:
+				configuration?.['SESSION_MAX_AGE'] ?? DEFAULT_SESSION_MAX_AGE,
+			overwrite: true,
+			httpOnly: true,
+			signed: true,
+			rolling: true,
+			renew: true
 		};
 		sessionConfig.genid = function () {
 			return `${
