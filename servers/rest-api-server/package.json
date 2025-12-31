@@ -77,7 +77,7 @@
 		"koa-requestid": "2.2.1",
 		"koa-ratelimit": "6.0.0",
 		"mongodb": "7.0.0",
-		"mongoose": "9.1.0",
+		"mongoose": "9.1.1",
 		"nodemailer": "7.0.12",
 		"objection": "3.1.5",
 		"overload-protection": "1.2.3",
