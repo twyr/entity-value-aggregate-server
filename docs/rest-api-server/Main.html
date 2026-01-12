@@ -69,7 +69,7 @@
 							<dd class="tag-source">
 								<ul class="dummy">
 									<li>
-										<a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/portal/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html#line8">line 8</a>
+										<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line8">line 8</a>
 									</li>
 								</ul>
 							</dd>
@@ -80,6 +80,403 @@
 						<li>BaseSurface</li>
 					</ul>
 					<h3 class="subsection-title">Methods</h3>
+					<h4 class="name" id="createProfile"><span class="type-signature">(async) </span>createProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Creates the profile for a new server-user in the system</p>.</p>
+					<div class="description">
+						<p>Creates the profile for a new server-user in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line110">line 110</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="deleteProfile"><span class="type-signature">(async) </span>deleteProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Deletes the profile of a server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Deletes the profile of a server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line164">line 164</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="generateOtp"><span class="type-signature">(async) </span>generateOtp<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Generates the OTP required for logging into the system
+						using a mobile number</p>.</p>
+					<div class="description">
+						<p>Generates the OTP required for logging into the system
+							using a mobile number</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line112">line 112</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username"
+// The OTP will be sent to the actual number offline
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890"}' -c ./cookies.txt ${base_url}/api/v1/server_users/session-manager/generate-otp
+
+Generated OTP for +911234567890. It will remain valid for 10 minutes.
+$</code></pre>
+					<h4 class="name" id="getConnectionStatuses"><span class="type-signature">(async) </span>getConnectionStatuses<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the connection statues available in the system
+						pending, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the connection statues available in the system
+							pending, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line174">line 174</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all connection statuses
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/connection-statuses/
+
+Array of connection statuses
+$</code></pre>
+					<h4 class="name" id="getContactTypes"><span class="type-signature">(async) </span>getContactTypes<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the contact types available in the system
+						mobile, email, fax, landline, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the contact types available in the system
+							mobile, email, fax, landline, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line142">line 142</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all contact types
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/contact-types/
+
+Array of contact types
+$</code></pre>
+					<h4 class="name" id="getGenders"><span class="type-signature">(async) </span>getGenders<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the genders available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the genders available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line206">line 206</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all genders
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/genders/
+
+Array of genders
+$</code></pre>
+					<h4 class="name" id="getLocales"><span class="type-signature">(async) </span>getLocales<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the locales available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the locales available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line237">line 237</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all locales
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/locales/
+
+Array of locales
+$</code></pre>
+					<h4 class="name" id="getProfile"><span class="type-signature">(async) </span>getProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the profile(s) associated with input data
+						The response payload will be in the JSON:API format</p>.</p>
+					<div class="description">
+						<p>Retrieves the profile(s) associated with input data
+							The response payload will be in the JSON:API format</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line97">line 97</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all server-users with the associated mobile number
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/server-users/profile/
+
+Server-user data
+$</code></pre>
+					<h4 class="name" id="login"><span class="type-signature">(async) </span>login<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user in, creates a session, and sends a cookie back
+						if the otp matches the one generated in the previous call</p>.</p>
+					<div class="description">
+						<p>Logs the user in, creates a session, and sends a cookie back
+							if the otp matches the one generated in the previous call</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line146">line 146</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username" and the generated OTP as "password"
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890", "password":"127024"}' -c ./cookies.txt ${base_url}/server-users/session-manager/login
+
+ServerUser basic profile
+$</code></pre>
+					<h4 class="name" id="logout"><span class="type-signature">(async) </span>logout<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user out</p>.</p>
+					<div class="description">
+						<p>Logs the user out</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line191">line 191</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+$ curl -X POST -b ./cookies.txt ${base_url}/api/v1/server_users/session-manager/logout
+
+Logged out server-user: ${First Name} ${Last Name}
+$</code></pre>
+					<h4 class="name" id="updateProfile"><span class="type-signature">(async) </span>updateProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Updates the profile for a new server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Updates the profile for a new server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line134">line 134</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
 					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
 					<p class="summary">
 					<p>Adds the route definitions and handlers for this surface to
@@ -93,7 +490,135 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/portal/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html#line26">line 26</a>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line120">line 120</a>
 								</li>
 							</ul>
 						</dd>
@@ -125,7 +650,2740 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/portal/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_portal_bounded_contexts_session_manager_surfaces_command_main.js.html#line63">line 63</a>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line88">line 88</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line75">line 75</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line90">line 90</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+				</article>
+			</section>
+			<section>
+				<header>
+					<h2><span class="attribs"><span class="type-signature"></span></span>Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+					<div class="class-description">
+						<p>The Main Surface for the ServerUser Profile Context.</p>
+					</div>
+				</header>
+				<article>
+					<div class="container-overview">
+						<h2>Constructor</h2>
+						<h4 class="name" id="Main"><span class="type-signature"></span>new Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+						<h5>Parameters:</h5>
+						<table class="params">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+									<th>Attributes</th>
+									<th class="last">Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name"><code>location</code></td>
+									<td class="type">
+										<span class="param-type">string</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>__dirname for this file in CJS, basically</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="name"><code>domainInterface</code></td>
+									<td class="type">
+										<span class="param-type">object</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>Domain functionality exposed to sub-artifacts</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dl class="details">
+							<dt class="tag-source">Source:</dt>
+							<dd class="tag-source">
+								<ul class="dummy">
+									<li>
+										<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line8">line 8</a>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<h3 class="subsection-title">Extends</h3>
+					<ul>
+						<li>BaseSurface</li>
+					</ul>
+					<h3 class="subsection-title">Methods</h3>
+					<h4 class="name" id="createProfile"><span class="type-signature">(async) </span>createProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Creates the profile for a new server-user in the system</p>.</p>
+					<div class="description">
+						<p>Creates the profile for a new server-user in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line110">line 110</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="deleteProfile"><span class="type-signature">(async) </span>deleteProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Deletes the profile of a server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Deletes the profile of a server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line164">line 164</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="generateOtp"><span class="type-signature">(async) </span>generateOtp<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Generates the OTP required for logging into the system
+						using a mobile number</p>.</p>
+					<div class="description">
+						<p>Generates the OTP required for logging into the system
+							using a mobile number</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line112">line 112</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username"
+// The OTP will be sent to the actual number offline
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890"}' -c ./cookies.txt ${base_url}/api/v1/server_users/session-manager/generate-otp
+
+Generated OTP for +911234567890. It will remain valid for 10 minutes.
+$</code></pre>
+					<h4 class="name" id="getConnectionStatuses"><span class="type-signature">(async) </span>getConnectionStatuses<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the connection statues available in the system
+						pending, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the connection statues available in the system
+							pending, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line174">line 174</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all connection statuses
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/connection-statuses/
+
+Array of connection statuses
+$</code></pre>
+					<h4 class="name" id="getContactTypes"><span class="type-signature">(async) </span>getContactTypes<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the contact types available in the system
+						mobile, email, fax, landline, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the contact types available in the system
+							mobile, email, fax, landline, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line142">line 142</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all contact types
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/contact-types/
+
+Array of contact types
+$</code></pre>
+					<h4 class="name" id="getGenders"><span class="type-signature">(async) </span>getGenders<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the genders available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the genders available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line206">line 206</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all genders
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/genders/
+
+Array of genders
+$</code></pre>
+					<h4 class="name" id="getLocales"><span class="type-signature">(async) </span>getLocales<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the locales available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the locales available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line237">line 237</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all locales
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/locales/
+
+Array of locales
+$</code></pre>
+					<h4 class="name" id="getProfile"><span class="type-signature">(async) </span>getProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the profile(s) associated with input data
+						The response payload will be in the JSON:API format</p>.</p>
+					<div class="description">
+						<p>Retrieves the profile(s) associated with input data
+							The response payload will be in the JSON:API format</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line97">line 97</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all server-users with the associated mobile number
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/server-users/profile/
+
+Server-user data
+$</code></pre>
+					<h4 class="name" id="login"><span class="type-signature">(async) </span>login<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user in, creates a session, and sends a cookie back
+						if the otp matches the one generated in the previous call</p>.</p>
+					<div class="description">
+						<p>Logs the user in, creates a session, and sends a cookie back
+							if the otp matches the one generated in the previous call</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line146">line 146</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username" and the generated OTP as "password"
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890", "password":"127024"}' -c ./cookies.txt ${base_url}/server-users/session-manager/login
+
+ServerUser basic profile
+$</code></pre>
+					<h4 class="name" id="logout"><span class="type-signature">(async) </span>logout<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user out</p>.</p>
+					<div class="description">
+						<p>Logs the user out</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line191">line 191</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+$ curl -X POST -b ./cookies.txt ${base_url}/api/v1/server_users/session-manager/logout
+
+Logged out server-user: ${First Name} ${Last Name}
+$</code></pre>
+					<h4 class="name" id="updateProfile"><span class="type-signature">(async) </span>updateProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Updates the profile for a new server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Updates the profile for a new server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line134">line 134</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line120">line 120</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line88">line 88</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line75">line 75</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line90">line 90</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+				</article>
+			</section>
+			<section>
+				<header>
+					<h2><span class="attribs"><span class="type-signature"></span></span>Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+					<div class="class-description">
+						<p>The Main Surface for the ServerUser Profile Context.</p>
+					</div>
+				</header>
+				<article>
+					<div class="container-overview">
+						<h2>Constructor</h2>
+						<h4 class="name" id="Main"><span class="type-signature"></span>new Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+						<h5>Parameters:</h5>
+						<table class="params">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+									<th>Attributes</th>
+									<th class="last">Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name"><code>location</code></td>
+									<td class="type">
+										<span class="param-type">string</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>__dirname for this file in CJS, basically</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="name"><code>domainInterface</code></td>
+									<td class="type">
+										<span class="param-type">object</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>Domain functionality exposed to sub-artifacts</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dl class="details">
+							<dt class="tag-source">Source:</dt>
+							<dd class="tag-source">
+								<ul class="dummy">
+									<li>
+										<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line8">line 8</a>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<h3 class="subsection-title">Extends</h3>
+					<ul>
+						<li>BaseSurface</li>
+					</ul>
+					<h3 class="subsection-title">Methods</h3>
+					<h4 class="name" id="createProfile"><span class="type-signature">(async) </span>createProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Creates the profile for a new server-user in the system</p>.</p>
+					<div class="description">
+						<p>Creates the profile for a new server-user in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line110">line 110</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="deleteProfile"><span class="type-signature">(async) </span>deleteProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Deletes the profile of a server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Deletes the profile of a server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line164">line 164</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="generateOtp"><span class="type-signature">(async) </span>generateOtp<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Generates the OTP required for logging into the system
+						using a mobile number</p>.</p>
+					<div class="description">
+						<p>Generates the OTP required for logging into the system
+							using a mobile number</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line112">line 112</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username"
+// The OTP will be sent to the actual number offline
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890"}' -c ./cookies.txt ${base_url}/api/v1/server_users/session-manager/generate-otp
+
+Generated OTP for +911234567890. It will remain valid for 10 minutes.
+$</code></pre>
+					<h4 class="name" id="getConnectionStatuses"><span class="type-signature">(async) </span>getConnectionStatuses<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the connection statues available in the system
+						pending, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the connection statues available in the system
+							pending, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line174">line 174</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all connection statuses
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/connection-statuses/
+
+Array of connection statuses
+$</code></pre>
+					<h4 class="name" id="getContactTypes"><span class="type-signature">(async) </span>getContactTypes<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the contact types available in the system
+						mobile, email, fax, landline, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the contact types available in the system
+							mobile, email, fax, landline, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line142">line 142</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all contact types
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/contact-types/
+
+Array of contact types
+$</code></pre>
+					<h4 class="name" id="getGenders"><span class="type-signature">(async) </span>getGenders<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the genders available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the genders available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line206">line 206</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all genders
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/genders/
+
+Array of genders
+$</code></pre>
+					<h4 class="name" id="getLocales"><span class="type-signature">(async) </span>getLocales<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the locales available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the locales available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line237">line 237</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all locales
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/locales/
+
+Array of locales
+$</code></pre>
+					<h4 class="name" id="getProfile"><span class="type-signature">(async) </span>getProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the profile(s) associated with input data
+						The response payload will be in the JSON:API format</p>.</p>
+					<div class="description">
+						<p>Retrieves the profile(s) associated with input data
+							The response payload will be in the JSON:API format</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line97">line 97</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all server-users with the associated mobile number
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/server-users/profile/
+
+Server-user data
+$</code></pre>
+					<h4 class="name" id="login"><span class="type-signature">(async) </span>login<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user in, creates a session, and sends a cookie back
+						if the otp matches the one generated in the previous call</p>.</p>
+					<div class="description">
+						<p>Logs the user in, creates a session, and sends a cookie back
+							if the otp matches the one generated in the previous call</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line146">line 146</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username" and the generated OTP as "password"
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890", "password":"127024"}' -c ./cookies.txt ${base_url}/server-users/session-manager/login
+
+ServerUser basic profile
+$</code></pre>
+					<h4 class="name" id="logout"><span class="type-signature">(async) </span>logout<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user out</p>.</p>
+					<div class="description">
+						<p>Logs the user out</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line191">line 191</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+$ curl -X POST -b ./cookies.txt ${base_url}/api/v1/server_users/session-manager/logout
+
+Logged out server-user: ${First Name} ${Last Name}
+$</code></pre>
+					<h4 class="name" id="updateProfile"><span class="type-signature">(async) </span>updateProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Updates the profile for a new server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Updates the profile for a new server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line134">line 134</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line120">line 120</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line88">line 88</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line75">line 75</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line90">line 90</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+				</article>
+			</section>
+			<section>
+				<header>
+					<h2><span class="attribs"><span class="type-signature"></span></span>Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h2>
+					<div class="class-description">
+						<p>The Main Surface for the Session Manager Module.</p>
+					</div>
+				</header>
+				<article>
+					<div class="container-overview">
+						<h2>Constructor</h2>
+						<h4 class="name" id="Main"><span class="type-signature"></span>new Main<span class="signature">(location<span class="signature-attributes">opt</span>, domainInterface<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+						<h5>Parameters:</h5>
+						<table class="params">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Type</th>
+									<th>Attributes</th>
+									<th class="last">Description</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="name"><code>location</code></td>
+									<td class="type">
+										<span class="param-type">string</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>__dirname for this file in CJS, basically</p>
+									</td>
+								</tr>
+								<tr>
+									<td class="name"><code>domainInterface</code></td>
+									<td class="type">
+										<span class="param-type">object</span>
+									</td>
+									<td class="attributes">
+										&lt;optional><br>
+									</td>
+									<td class="description last">
+										<p>Domain functionality exposed to sub-artifacts</p>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<dl class="details">
+							<dt class="tag-source">Source:</dt>
+							<dd class="tag-source">
+								<ul class="dummy">
+									<li>
+										<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line8">line 8</a>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<h3 class="subsection-title">Extends</h3>
+					<ul>
+						<li>BaseSurface</li>
+					</ul>
+					<h3 class="subsection-title">Methods</h3>
+					<h4 class="name" id="createProfile"><span class="type-signature">(async) </span>createProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Creates the profile for a new server-user in the system</p>.</p>
+					<div class="description">
+						<p>Creates the profile for a new server-user in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line110">line 110</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="deleteProfile"><span class="type-signature">(async) </span>deleteProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Deletes the profile of a server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Deletes the profile of a server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line164">line 164</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="generateOtp"><span class="type-signature">(async) </span>generateOtp<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Generates the OTP required for logging into the system
+						using a mobile number</p>.</p>
+					<div class="description">
+						<p>Generates the OTP required for logging into the system
+							using a mobile number</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line112">line 112</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username"
+// The OTP will be sent to the actual number offline
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890"}' -c ./cookies.txt ${base_url}/api/v1/server_users/session-manager/generate-otp
+
+Generated OTP for +911234567890. It will remain valid for 10 minutes.
+$</code></pre>
+					<h4 class="name" id="getConnectionStatuses"><span class="type-signature">(async) </span>getConnectionStatuses<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the connection statues available in the system
+						pending, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the connection statues available in the system
+							pending, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line174">line 174</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all connection statuses
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/connection-statuses/
+
+Array of connection statuses
+$</code></pre>
+					<h4 class="name" id="getContactTypes"><span class="type-signature">(async) </span>getContactTypes<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the contact types available in the system
+						mobile, email, fax, landline, etc.</p>
+					</p>
+					<div class="description">
+						<p>Retrieves the contact types available in the system
+							mobile, email, fax, landline, etc.</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line142">line 142</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all contact types
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/contact-types/
+
+Array of contact types
+$</code></pre>
+					<h4 class="name" id="getGenders"><span class="type-signature">(async) </span>getGenders<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the genders available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the genders available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line206">line 206</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all genders
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/genders/
+
+Array of genders
+$</code></pre>
+					<h4 class="name" id="getLocales"><span class="type-signature">(async) </span>getLocales<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the locales available in the system</p>.</p>
+					<div class="description">
+						<p>Retrieves the locales available in the system</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line237">line 237</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all locales
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/masterdata/locales/
+
+Array of locales
+$</code></pre>
+					<h4 class="name" id="getProfile"><span class="type-signature">(async) </span>getProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Retrieves the profile(s) associated with input data
+						The response payload will be in the JSON:API format</p>.</p>
+					<div class="description">
+						<p>Retrieves the profile(s) associated with input data
+							The response payload will be in the JSON:API format</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line97">line 97</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Retrieve all server-users with the associated mobile number
+$ curl -X GET -H "Content-Type: application/json" -b ./cookies.txt ${base_url}/api/v1/server-users/profile/
+
+Server-user data
+$</code></pre>
+					<h4 class="name" id="login"><span class="type-signature">(async) </span>login<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user in, creates a session, and sends a cookie back
+						if the otp matches the one generated in the previous call</p>.</p>
+					<div class="description">
+						<p>Logs the user in, creates a session, and sends a cookie back
+							if the otp matches the one generated in the previous call</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line146">line 146</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+// Send in the mobile number as "username" and the generated OTP as "password"
+$ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890", "password":"127024"}' -c ./cookies.txt ${base_url}/server-users/session-manager/login
+
+ServerUser basic profile
+$</code></pre>
+					<h4 class="name" id="logout"><span class="type-signature">(async) </span>logout<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Logs the user out</p>.</p>
+					<div class="description">
+						<p>Logs the user out</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line191">line 191</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h5>Example</h5>
+					<pre class="prettyprint"><code>// Execute CURL command from the terminal
+$ curl -X POST -b ./cookies.txt ${base_url}/api/v1/server_users/session-manager/logout
+
+Logged out server-user: ${First Name} ${Last Name}
+$</code></pre>
+					<h4 class="name" id="updateProfile"><span class="type-signature">(async) </span>updateProfile<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Updates the profile for a new server-user in the system
+						A server-user has to be logged in</p>.</p>
+					<div class="description">
+						<p>Updates the profile for a new server-user in the system
+							A server-user has to be logged in</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line134">line 134</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_registerSurface"><span class="type-signature">(async) </span>_registerSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Adds the route definitions and handlers for this surface to
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Adds the route definitions and handlers for this surface to
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line47">line 47</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>The routes to be added to the Rest API Router</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line120">line 120</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line88">line 88</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line75">line 75</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_unregisterSurface"><span class="type-signature">(async) </span>_unregisterSurface<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Removes the route definitions and handlers for this surface from
+						the Rest API Router</p>.</p>
+					<div class="description">
+						<p>Removes the route definitions and handlers for this surface from
+							the Rest API Router</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line90">line 90</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="bounded_contexts_masterdata_surfaces_query_main.js.html">bounded_contexts/masterdata/surfaces/query/main.js</a>, <a href="bounded_contexts_masterdata_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_command_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html">domains/server_users/bounded_contexts/profile/surfaces/query/main.js</a>, <a href="domains_server_users_bounded_contexts_profile_surfaces_query_main.js.html#line26">line 26</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<ul>
+							<li>Nothing</li>
+						</ul>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">null</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="load"><span class="type-signature">(async) </span>load<span class="signature">()</span><span class="type-signature"> &rarr; {null}</span></h4>
+					<p class="summary">
+					<p>Sets the user role in the request headers for access control purposes
+						by passing it in to the base class load method</p>.</p>
+					<div class="description">
+						<p>Sets the user role in the request headers for access control purposes
+							by passing it in to the base class load method</p>
+					</div>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html">domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js</a>, <a href="domains_server_users_bounded_contexts_session_manager_surfaces_command_main.js.html#line26">line 26</a>
 								</li>
 							</ul>
 						</dd>
@@ -151,7 +3409,6 @@
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -161,10 +3418,15 @@
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -173,13 +3435,12 @@
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: domains/portal/bounded_contexts/session_manager/middlewares/session.js</title>
+		<title>JSDoc: Source: domains/server_users/bounded_contexts/session_manager/event_handlers/session.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: domains/portal/bounded_contexts/session_manager/middlewares/session.js</h1>
+			<h1 class="page-title">Source: domains/server_users/bounded_contexts/session_manager/event_handlers/session.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -24,18 +24,18 @@
  */
 import { EVASBaseFactory } from '@twyr/framework-classes';
 import { createErrorForPropagation } from '@twyr/error-serializer';
-import { BaseMiddleware } from 'baseclass:middleware';
+import { BaseEventHandler } from 'baseclass:event-handler';
 
 /**
  * @class Session
- * @extends BaseMiddleware
+ * @extends BaseEventHandler
  *
  * @param {string} [location] - __dirname for this file in CJS, basically
  * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
  *
- * @classdesc The Middleware to handle login / logout / register
+ * @classdesc The Event Handler to handle login / logout / register
  */
-export class Session extends BaseMiddleware {
+export class Session extends BaseEventHandler {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor(location, domainInterface) {
@@ -50,33 +50,33 @@ export class Session extends BaseMiddleware {
 	 * @instance
 	 * @override
 	 * @function
-	 * @name _registerApi
+	 * @name _registerHandlers
 	 *
 	 * @returns {null} - Nothing
 	 *
 	 * @description
-	 * Adds the API to the apiRegistry in the domainInterface
+	 * Adds the API to the eventEmitter in the domainInterface
 	 *
 	 */
-	async _registerApi() {
+	async _registerHandlers() {
 		const errors = [];
 
 		try {
-			const apiRegistry = this?.domainInterface?.apiRegistry;
+			const eventEmitter = this?.domainInterface?.eventEmitter;
 			let registerResolutions = [];
 
-			const baseApis = await super._registerApi?.();
-			for (const baseApi of baseApis ?? []) {
+			const baseHandlers = await super._registerHandlers?.();
+			for (const baseHandler of baseHandlers ?? []) {
 				registerResolutions?.push?.(
-					apiRegistry?.register?.(baseApi?.pattern, baseApi?.handler)
+					eventEmitter?.on?.(baseHandler?.event, baseHandler?.handler)
 				);
 			}
 
 			registerResolutions?.push?.(
-				apiRegistry?.register?.('LOGIN', this.#login?.bind?.(this))
-			);
-			registerResolutions?.push?.(
-				apiRegistry?.register?.('LOGOUT', this.#logout?.bind?.(this))
+				eventEmitter?.on?.(
+					'SERVER_USER_LOGOUT',
+					this.#postLogoutCleanup?.bind?.(this)
+				)
 			);
 
 			registerResolutions =
@@ -92,7 +92,7 @@ export class Session extends BaseMiddleware {
 		if (!errors?.length) return;
 
 		const propagatedError = createErrorForPropagation?.(
-			`${this?.name}::_registerApi error`,
+			`${this?.name}::_registerHandler error`,
 			errors
 		);
 
@@ -105,26 +105,26 @@ export class Session extends BaseMiddleware {
 	 * @instance
 	 * @override
 	 * @function
-	 * @name _unregisterApi
+	 * @name _unregisterHandlers
 	 *
 	 * @returns {null} - Nothing
 	 *
 	 * @description
-	 * Removes the API from the apiRegistry in the domainInterface
+	 * Removes the API from the eventEmitter in the domainInterface
 	 *
 	 */
-	async _unregisterApi() {
+	async _unregisterHandlers() {
 		const errors = [];
 
 		try {
-			const apiRegistry = this?.domainInterface?.apiRegistry;
+			const eventEmitter = this?.domainInterface?.eventEmitter;
 			let unregisterResolutions = [];
 
 			unregisterResolutions?.push?.(
-				apiRegistry?.unregister?.('LOGIN', this.#login?.bind?.(this))
-			);
-			unregisterResolutions?.push?.(
-				apiRegistry?.unregister?.('LOGOUT', this.#logout?.bind?.(this))
+				eventEmitter?.off?.(
+					'SERVER_USER_LOGOUT',
+					this.#postLogoutCleanup?.bind?.(this)
+				)
 			);
 
 			unregisterResolutions = await Promise?.allSettled?.(
@@ -135,7 +135,7 @@ export class Session extends BaseMiddleware {
 				errors?.push?.(unregisterResolution?.reason);
 			}
 
-			await super._unregisterApi?.();
+			await super._unregisterHandlers?.();
 		} catch (error) {
 			errors?.push?.(error);
 		}
@@ -143,7 +143,7 @@ export class Session extends BaseMiddleware {
 		if (!errors?.length) return;
 
 		const propagatedError = createErrorForPropagation?.(
-			`${this?.name}::_unregisterApi error`,
+			`${this?.name}::_unregisterHandlers error`,
 			errors
 		);
 
@@ -152,44 +152,29 @@ export class Session extends BaseMiddleware {
 	// #endregion
 
 	// #region Handlers
-	async #login({ tenant, user }) {
-		// THIS IS WHERE THE POST-LOGIN PROCESSING, IF ANY REQUIRED
-		// GETS EXECUTED
-
-		return {
-			status: 200,
-			body: `Logged in ${user?.['first_name']} ${user?.['last_name']} for ${tenant?.name} tenant`
-		};
-	}
-
-	async #logout(ctxt) {
+	async #postLogoutCleanup(eventData) {
 		const cache =
 			await this?.domainInterface?.iocContainer?.resolve?.('Cache');
-
-		const userId = ctxt?.state?.user?.id;
-		const tenantId = ctxt?.state?.tenant?.id;
-
-		await ctxt?.logout?.();
-
 		await cache?.del?.(
-			`twyr!entity!aggregate!server!user!${userId}!basics`
-		);
-		await cache?.del?.(
-			`twyr!entity!aggregate!server!user!${userId}!${tenantId}!permissions`
+			`twyr!entity!value!aggregate!user!${eventData?.userId}!basics`
 		);
 
-		return { status: 200, body: 'Logged out' };
+		const logger =
+			await this?.domainInterface?.iocContainer?.resolve?.('Logger');
+		logger?.debug?.(
+			`${this?.name}::postLogoutCleanup: ${eventData?.userId} cache cleared`
+		);
 	}
 	// #endregion
 }
 
 /**
- * @class MiddlewareFactory
+ * @class EventHandlerFactory
  * @extends EVASBaseFactory
  *
- * @classdesc The Session Manager Module Session Middleware Class Factory.
+ * @classdesc The Session Manager Module Session Event Handler Class Factory.
  */
-export default class MiddlewareFactory extends EVASBaseFactory {
+export default class EventHandlerFactory extends EVASBaseFactory {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor() {
@@ -199,7 +184,7 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 
 	// #region Lifecycle API
 	/**
-	 * @memberof MiddlewareFactory
+	 * @memberof EventHandlerFactory
 	 * @async
 	 * @static
 	 * @override
@@ -208,25 +193,25 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 	 *
 	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
 	 *
-	 * @returns {Session} - The Session middleware instance.
+	 * @returns {Session} - The Session event handler instance.
 	 *
 	 */
 	static async createInstances(domainInterface) {
-		if (!MiddlewareFactory.#sessionInstance) {
+		if (!EventHandlerFactory.#eventHandlerInstance) {
 			const sessionInstance = new Session(
-				MiddlewareFactory['$disk_unc'],
+				EventHandlerFactory['$disk_unc'],
 				domainInterface
 			);
 
 			await sessionInstance?.load?.();
-			MiddlewareFactory.#sessionInstance = sessionInstance;
+			EventHandlerFactory.#eventHandlerInstance = sessionInstance;
 		}
 
-		return MiddlewareFactory.#sessionInstance;
+		return EventHandlerFactory.#eventHandlerInstance;
 	}
 
 	/**
-	 * @memberof MiddlewareFactory
+	 * @memberof EventHandlerFactory
 	 * @async
 	 * @static
 	 * @override
@@ -238,8 +223,8 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 	 * @description Clears the Session instance
 	 */
 	static async destroyInstances() {
-		await MiddlewareFactory.#sessionInstance?.unload?.();
-		MiddlewareFactory.#sessionInstance = undefined;
+		await EventHandlerFactory.#eventHandlerInstance?.unload?.();
+		EventHandlerFactory.#eventHandlerInstance = undefined;
 
 		return;
 	}
@@ -247,25 +232,25 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 
 	// #region Getters
 	/**
-	 * @memberof MiddlewareFactory
+	 * @memberof EventHandlerFactory
 	 * @async
 	 * @static
 	 * @override
 	 * @function
 	 * @name MiddlewareName
 	 *
-	 * @returns {string} - Name of this middleware.
+	 * @returns {string} - Name of this event handler.
 	 *
 	 * @description
-	 * Returns the name of this middleware - Session
+	 * Returns the name of this event handler - Session
 	 */
-	static get MiddlewareName() {
+	static get EventHandlerName() {
 		return 'Session';
 	}
 	// #endregion
 
 	// #region Private Static Members
-	static #sessionInstance = undefined;
+	static #eventHandlerInstance = undefined;
 	// #endregion
 }
 </code></pre>
@@ -276,7 +261,6 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -286,10 +270,15 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -298,13 +287,12 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

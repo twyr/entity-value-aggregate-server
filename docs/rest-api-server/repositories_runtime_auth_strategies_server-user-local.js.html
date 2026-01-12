@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: repositories/runtime/auth/strategies/local.js</title>
+		<title>JSDoc: Source: repositories/runtime/auth/strategies/server-user-local.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: repositories/runtime/auth/strategies/local.js</h1>
+			<h1 class="page-title">Source: repositories/runtime/auth/strategies/server-user-local.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -38,41 +38,41 @@ export default async function localStrategy(
 	cacheRepository,
 	databaseRepository
 ) {
-	let upash = await import('upash');
-	upash = upash?.['default'];
-
-	let pbkdf2 = await import('@phc/pbkdf2');
-	pbkdf2 = pbkdf2?.['default'];
-
-	upash?.install?.('pbkdf2', pbkdf2);
-
 	let LocalStrategy = await import('passport-local');
 	LocalStrategy = LocalStrategy?.Strategy;
 
 	passportInstance?.use?.(
-		'server-local',
+		'server-user-local',
 		new LocalStrategy(
 			{ passReqToCallback: true },
 			async (request, username, password, callback) => {
 				try {
-					let userRecord = await databaseRepository?.raw?.(
-						`SELECT * FROM users WHERE email = ? `,
+					let serverUserRecord = await databaseRepository?.raw?.(
+						`SELECT * FROM server_users WHERE mobile_no = ? AND is_active = true`,
 						[username]
 					);
-					userRecord = userRecord?.rows?.[0];
-					if (!userRecord) {
-						throw new Error(`Credential mismatch`);
+					serverUserRecord = serverUserRecord?.rows?.[0];
+					if (!serverUserRecord) {
+						throw new Error(`ServerUser record not found`);
 					}
 
-					const credentialMatch = await upash?.verify?.(
-						userRecord?.['password'],
-						password
+					const otpNumber = await cacheRepository?.get?.(
+						`server-user-otp-${serverUserRecord?.['mobile_no']}`
 					);
-					if (!credentialMatch) {
-						throw new Error(`Credential mismatch`);
+
+					if (!otpNumber) {
+						throw new Error(
+							`OTP has expired. Please request a new OTP.`
+						);
 					}
 
-					callback?.(undefined, userRecord);
+					if (otpNumber !== password) {
+						throw new Error(
+							`Invalid OTP number. Please try again.`
+						);
+					}
+
+					callback?.(undefined, serverUserRecord);
 				} catch (error) {
 					callback?.(error);
 				}
@@ -88,7 +88,6 @@ export default async function localStrategy(
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -98,10 +97,15 @@ export default async function localStrategy(
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -110,13 +114,12 @@ export default async function localStrategy(
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>JSDoc: Source: domains/server_users/bounded_contexts/session_manager/middlewares/session.js</title>
+		<script src="scripts/prettify/prettify.js"> </script>
+		<script src="scripts/prettify/lang-css.js"> </script>
+		<!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+		<link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+		<link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	</head>
+
+	<body>
+		<div id="main">
+			<h1 class="page-title">Source: domains/server_users/bounded_contexts/session_manager/middlewares/session.js</h1>
+			<section>
+				<article>
+					<pre class="prettyprint source linenums"><code>/**
+ * Imports for this file
+ * @ignore
+ */
+import { randomInt } from 'node:crypto';
+import { DateTime } from 'luxon';
+
+import { EVASBaseFactory } from '@twyr/framework-classes';
+import { createErrorForPropagation } from '@twyr/error-serializer';
+import { ServerUserBaseMiddleware } from 'baseclass:middleware';
+
+/**
+ * @class Session
+ * @extends ServerUserBaseMiddleware
+ *
+ * @param {string} [location] - __dirname for this file in CJS, basically
+ * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
+ *
+ * @classdesc The Middleware to handle login / logout / register
+ */
+export class Session extends ServerUserBaseMiddleware {
+	// #region Constructor
+	// eslint-disable-next-line jsdoc/require-jsdoc
+	constructor(location, domainInterface) {
+		super(location, domainInterface);
+	}
+	// #endregion
+
+	// #region Protected Methods, to be overridden by derived classes
+	/**
+	 * @memberof Session
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name _registerApi
+	 *
+	 * @returns {null} - The array of API to be registered
+	 *
+	 * @description
+	 * Adds the API to the apiRegistry in the domainInterface
+	 *
+	 */
+	async _registerApi() {
+		const errors = [];
+
+		try {
+			const apiRegistry = this?.domainInterface?.apiRegistry;
+			let registerResolutions = [];
+
+			const baseApis = await super._registerApi?.();
+			for (const baseApi of baseApis ?? []) {
+				registerResolutions?.push?.(
+					apiRegistry?.register?.(baseApi?.pattern, baseApi?.handler)
+				);
+			}
+
+			registerResolutions?.push?.(
+				apiRegistry?.register?.(
+					'GENERATE_OTP',
+					this.#generateOtp?.bind?.(this)
+				)
+			);
+			registerResolutions?.push?.(
+				apiRegistry?.register?.('LOGIN', this.#login?.bind?.(this))
+			);
+			registerResolutions?.push?.(
+				apiRegistry?.register?.('LOGOUT', this.#logout?.bind?.(this))
+			);
+
+			registerResolutions =
+				await Promise?.allSettled?.(registerResolutions);
+			for (const registerResolution of registerResolutions) {
+				if (registerResolution?.status === 'fulfilled') continue;
+				errors?.push?.(registerResolution?.reason);
+			}
+		} catch (error) {
+			errors?.push?.(error);
+		}
+
+		if (!errors?.length) return;
+
+		const propagatedError = createErrorForPropagation?.(
+			`${this?.name}::_registerApi error`,
+			errors
+		);
+
+		if (propagatedError) throw propagatedError;
+	}
+
+	/**
+	 * @memberof Session
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name _unregisterApi
+	 *
+	 * @returns {null} - Nothing
+	 *
+	 * @description
+	 * Removes the API from the apiRegistry in the domainInterface
+	 *
+	 */
+	async _unregisterApi() {
+		const errors = [];
+
+		try {
+			const apiRegistry = this?.domainInterface?.apiRegistry;
+			let unregisterResolutions = [];
+
+			unregisterResolutions?.push?.(
+				apiRegistry?.unregister?.('LOGIN', this.#login?.bind?.(this))
+			);
+			unregisterResolutions?.push?.(
+				apiRegistry?.unregister?.('LOGOUT', this.#logout?.bind?.(this))
+			);
+			unregisterResolutions?.push?.(
+				apiRegistry?.unregister?.(
+					'GENERATE_OTP',
+					this.#generateOtp?.bind?.(this)
+				)
+			);
+
+			unregisterResolutions = await Promise?.allSettled?.(
+				unregisterResolutions
+			);
+			for (const unregisterResolution of unregisterResolutions) {
+				if (unregisterResolution?.status === 'fulfilled') continue;
+				errors?.push?.(unregisterResolution?.reason);
+			}
+
+			await super._unregisterApi?.();
+		} catch (error) {
+			errors?.push?.(error);
+		}
+
+		if (!errors?.length) return;
+
+		const propagatedError = createErrorForPropagation?.(
+			`${this?.name}::_unregisterApi error`,
+			errors
+		);
+
+		if (propagatedError) throw propagatedError;
+	}
+	// #endregion
+
+	// #region Handlers
+	async #generateOtp({ username }) {
+		// Step 1: Generate a crypto-secure random 6-digit OTP
+		let secureOtp = randomInt(100_000, 1_000_000);
+
+		// Step 2: Store the OTP with an expiry against the username
+		const cacheRepository =
+			await this?.domainInterface?.iocContainer?.resolve?.('Cache');
+
+		const cacheMulti = await cacheRepository?.multi?.();
+		cacheMulti?.set?.(`server-user-otp-${username}`, secureOtp);
+		cacheMulti?.expire?.(`server-user-otp-${username}`, 600);
+		await cacheMulti?.exec?.();
+
+		// Step 3: Compute OTP expiry time
+		let expiryTime = DateTime?.now?.()?.plus?.({ minutes: 10 });
+		expiryTime = expiryTime
+			// TODO: Get the locale based on user preferences
+			?.setLocale('en-IN')
+			?.toLocaleString?.(DateTime?.TIME_SIMPLE);
+
+		let responseMsg = undefined;
+		if (global.serverEnvironment === 'production') {
+			responseMsg = `OTP for ${username} sent. Please check your device. Valid till ${expiryTime}.`;
+		} else {
+			responseMsg = `OTP for ${username}: ${secureOtp}. Valid till ${expiryTime}.`;
+		}
+
+		// Step 3: Send the OTP back
+		return {
+			status: 200,
+			body: responseMsg
+		};
+	}
+
+	async #login({ user }) {
+		// THIS IS WHERE THE POST-LOGIN PROCESSING, IF ANY REQUIRED
+		// GETS EXECUTED
+
+		// Step 1: Emit event so other parts of the system can start
+		// doing what they need to do
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGIN', {
+			userId: user?.id
+		});
+
+		// Step 2: Use the API Registry to fetch the server-user data from
+		// the Profile context
+		const apiRegistry = this?.domainInterface?.apiRegistry;
+		const loggedInUser = await apiRegistry?.execute?.(
+			'SERVERUSERS::PROFILE::READ',
+			{
+				user: user,
+				serverUserId: user?.id
+			}
+		);
+
+		// Finally: Return the logged in user details
+		return {
+			status: 200,
+			body: loggedInUser
+		};
+	}
+
+	async #logout({ userId, userRole, userName }) {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+			userId: userId
+		});
+
+		return {
+			status: 200,
+			body: `Logged out ${userRole}: ${userName}`
+		};
+	}
+	// #endregion
+}
+
+/**
+ * @class MiddlewareFactory
+ * @extends EVASBaseFactory
+ *
+ * @classdesc The Session Manager Module Session Middleware Class Factory.
+ */
+export default class MiddlewareFactory extends EVASBaseFactory {
+	// #region Constructor
+	// eslint-disable-next-line jsdoc/require-jsdoc
+	constructor() {
+		super();
+	}
+	// #endregion
+
+	// #region Lifecycle API
+	/**
+	 * @memberof MiddlewareFactory
+	 * @async
+	 * @static
+	 * @override
+	 * @function
+	 * @name createInstance
+	 *
+	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
+	 *
+	 * @returns {Session} - The Session middleware instance.
+	 *
+	 */
+	static async createInstances(domainInterface) {
+		if (!MiddlewareFactory.#sessionInstance) {
+			const sessionInstance = new Session(
+				MiddlewareFactory['$disk_unc'],
+				domainInterface
+			);
+
+			await sessionInstance?.load?.();
+			MiddlewareFactory.#sessionInstance = sessionInstance;
+		}
+
+		return MiddlewareFactory.#sessionInstance;
+	}
+
+	/**
+	 * @memberof MiddlewareFactory
+	 * @async
+	 * @static
+	 * @override
+	 * @function
+	 * @name destroyInstances
+	 *
+	 * @returns {undefined} - Nothing.
+	 *
+	 * @description Clears the Session instance
+	 */
+	static async destroyInstances() {
+		await MiddlewareFactory.#sessionInstance?.unload?.();
+		MiddlewareFactory.#sessionInstance = undefined;
+
+		return;
+	}
+	// #endregion
+
+	// #region Getters
+	/**
+	 * @memberof MiddlewareFactory
+	 * @async
+	 * @static
+	 * @override
+	 * @function
+	 * @name MiddlewareName
+	 *
+	 * @returns {string} - Name of this middleware.
+	 *
+	 * @description
+	 * Returns the name of this middleware - Session
+	 */
+	static get MiddlewareName() {
+		return 'Session';
+	}
+	// #endregion
+
+	// #region Private Static Members
+	static #sessionInstance = undefined;
+	// #endregion
+}
+</code></pre>
+				</article>
+			</section>
+		</div>
+		<nav>
+			<h2><a href="index.html">Home</a></h2>
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
+				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
+				<li><a href="Audit.html">Audit</a></li>
+				<li><a href="Auth.html">Auth</a></li>
+				<li><a href="Basics.html">Basics</a></li>
+				<li><a href="BoundedContextFactory.html">BoundedContextFactory</a></li>
+				<li><a href="Cache.html">Cache</a></li>
+				<li><a href="Configuration.html">Configuration</a></li>
+				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
+				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
+				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
+				<li><a href="Logger.html">Logger</a></li>
+				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
+				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
+				<li><a href="ModelFactory.html">ModelFactory</a></li>
+				<li><a href="MongoDB.html">MongoDB</a></li>
+				<li><a href="Notification.html">Notification</a></li>
+				<li><a href="Profile.html">Profile</a></li>
+				<li><a href="Renderer.html">Renderer</a></li>
+				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
+				<li><a href="RestApi.html">RestApi</a></li>
+				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
+				<li><a href="Session.html">Session</a></li>
+				<li><a href="SessionManager.html">SessionManager</a></li>
+				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
+			</ul>
+			<h3>Global</h3>
+			<ul>
+				<li><a href="global.html#localStrategy">localStrategy</a></li>
+				<li><a href="global.html#serializeDeserialize">serializeDeserialize</a></li>
+				<li><a href="global.html#userSessionCache">userSessionCache</a></li>
+			</ul>
+		</nav>
+		<br class="clear">
+		<footer>
+			Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a>
+		</footer>
+		<script>
+			prettyPrint();
+
+		</script>
+		<script src="scripts/linenumber.js"> </script>
+	</body>
+
+</html>

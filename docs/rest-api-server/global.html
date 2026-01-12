@@ -86,7 +86,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="repositories_runtime_auth_strategies_local.js.html">repositories/runtime/auth/strategies/local.js</a>, <a href="repositories_runtime_auth_strategies_local.js.html#line1">line 1</a>
+									<a href="repositories_runtime_auth_strategies_server-user-local.js.html">repositories/runtime/auth/strategies/server-user-local.js</a>, <a href="repositories_runtime_auth_strategies_server-user-local.js.html#line1">line 1</a>
 								</li>
 							</ul>
 						</dd>
@@ -184,7 +184,7 @@
 							<span class="param-type">null</span>
 						</dd>
 					</dl>
-					<h4 class="name" id="userSessionCache"><span class="type-signature">(async) </span>userSessionCache<span class="signature">(tenantId<span class="signature-attributes">opt</span>, userId<span class="signature-attributes">opt</span>, cacheRepository<span class="signature-attributes">opt</span>, databaseRepository<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
+					<h4 class="name" id="userSessionCache"><span class="type-signature">(async) </span>userSessionCache<span class="signature">(userRole<span class="signature-attributes">opt</span>, userId<span class="signature-attributes">opt</span>, cacheRepository<span class="signature-attributes">opt</span>, databaseRepository<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
 					<p class="summary">
 					<p>Retrieves User details from the database / cache and returns it</p>.</p>
 					<div class="description">
@@ -202,7 +202,7 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td class="name"><code>tenantId</code></td>
+								<td class="name"><code>userRole</code></td>
 								<td class="type">
 									<span class="param-type">string</span>
 								</td>
@@ -210,7 +210,7 @@
 									&lt;optional><br>
 								</td>
 								<td class="description last">
-									<p>GUID representing a Tenant</p>
+									<p>Role of the user</p>
 								</td>
 							</tr>
 							<tr>
@@ -256,7 +256,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="repositories_runtime_auth_helpers_user-session-cache.js.html">repositories/runtime/auth/helpers/user-session-cache.js</a>, <a href="repositories_runtime_auth_helpers_user-session-cache.js.html#line128">line 128</a>
+									<a href="repositories_runtime_auth_helpers_user-session-cache.js.html">repositories/runtime/auth/helpers/user-session-cache.js</a>, <a href="repositories_runtime_auth_helpers_user-session-cache.js.html#line65">line 65</a>
 								</li>
 							</ul>
 						</dd>
@@ -282,7 +282,6 @@
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -292,10 +291,15 @@
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -304,13 +308,12 @@
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

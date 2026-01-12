@@ -41,7 +41,8 @@
 const errorSerializer = function errorSerializer(error) {
 	let printFullStack = true;
 	const serializedError = {
-		message: error?.message
+		message: error?.message,
+		location: error?.stack?.split?.('\n')?.[1]?.trim?.()
 	};
 
 	if (error instanceof AggregateError) {

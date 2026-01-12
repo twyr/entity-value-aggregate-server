@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: domains/portal/bounded_contexts/session_manager/index.js</title>
+		<title>JSDoc: Source: bounded_contexts/masterdata/index.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: domains/portal/bounded_contexts/session_manager/index.js</h1>
+			<h1 class="page-title">Source: bounded_contexts/masterdata/index.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -26,16 +26,16 @@ import { EVASBaseFactory } from '@twyr/framework-classes';
 import { BaseBoundedContext } from 'baseclass:bounded-context';
 
 /**
- * @class SessionManager
- * @extends BasEVASEVASeBoundedContext
+ * @class Masterdata
+ * @extends BaseBoundedContext
  *
  * @param {string} [location] - __dirname for this file in CJS, basically
  * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
  *
- * @classdesc The SessionManager BoundedContext Class.
+ * @classdesc The Masterdata BoundedContext Class.
  *
  */
-class SessionManager extends BaseBoundedContext {
+class Masterdata extends BaseBoundedContext {
 	// #region Constructor
 	constructor(location, domainInterface) {
 		super(location, domainInterface);
@@ -44,7 +44,7 @@ class SessionManager extends BaseBoundedContext {
 
 	// #region Startup / Shutdown
 	/**
-	 * @memberof SessionManager
+	 * @memberof Masterdata
 	 * @async
 	 * @instance
 	 * @override
@@ -62,7 +62,7 @@ class SessionManager extends BaseBoundedContext {
 	}
 
 	/**
-	 * @memberof SessionManager
+	 * @memberof Masterdata
 	 * @async
 	 * @instance
 	 * @override
@@ -85,7 +85,7 @@ class SessionManager extends BaseBoundedContext {
  * @class BoundedContextFactory
  * @extends EVASBaseFactory
  *
- * @classdesc The SessionManager BoundedContext Class Factory.
+ * @classdesc The Masterdata BoundedContext Class Factory.
  */
 export default class BoundedContextFactory extends EVASBaseFactory {
 	// #region Constructor
@@ -106,22 +106,21 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 	 *
 	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
 	 *
-	 * @returns {SessionManager} - The SessionManager module instance.
+	 * @returns {Masterdata} - The Masterdata module instance.
 	 *
 	 */
 	static async createInstances(domainInterface) {
-		if (!BoundedContextFactory.#sessionManagerInstance) {
-			const sessionManagerInstance = new SessionManager(
+		if (!BoundedContextFactory.#masterdataInstance) {
+			const masterdataInstance = new Masterdata(
 				BoundedContextFactory['$disk_unc'],
 				domainInterface
 			);
 
-			await sessionManagerInstance?.load?.();
-			BoundedContextFactory.#sessionManagerInstance =
-				sessionManagerInstance;
+			await masterdataInstance?.load?.();
+			BoundedContextFactory.#masterdataInstance = masterdataInstance;
 		}
 
-		return BoundedContextFactory.#sessionManagerInstance;
+		return BoundedContextFactory.#masterdataInstance;
 	}
 
 	/**
@@ -134,11 +133,11 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 	 *
 	 * @returns {undefined} - Nothing.
 	 *
-	 * @description Clears the SessionManager instance
+	 * @description Clears the Masterdata instance
 	 */
 	static async destroyInstances() {
-		await BoundedContextFactory.#sessionManagerInstance?.unload?.();
-		BoundedContextFactory.#sessionManagerInstance = undefined;
+		await BoundedContextFactory.#masterdataInstance?.unload?.();
+		BoundedContextFactory.#masterdataInstance = undefined;
 
 		return;
 	}
@@ -156,15 +155,15 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 	 * @returns {string} - Name of this bounded context.
 	 *
 	 * @description
-	 * Returns the name of this bounded context - SessionManager
+	 * Returns the name of this bounded context - Masterdata
 	 */
 	static get BoundedContextName() {
-		return 'SessionManager';
+		return 'Masterdata';
 	}
 	// #endregion
 
 	// #region Private Static Members
-	static #sessionManagerInstance = undefined;
+	static #masterdataInstance = undefined;
 	// #endregion
 }
 </code></pre>
@@ -175,7 +174,6 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -185,10 +183,15 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -197,13 +200,12 @@ export default class BoundedContextFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

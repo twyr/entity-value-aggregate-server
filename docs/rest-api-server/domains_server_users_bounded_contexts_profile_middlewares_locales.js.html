@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: domains/admin/bounded_contexts/tenant/middlewares/roles.js</title>
+		<title>JSDoc: Source: domains/server_users/bounded_contexts/profile/middlewares/locales.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: domains/admin/bounded_contexts/tenant/middlewares/roles.js</h1>
+			<h1 class="page-title">Source: domains/server_users/bounded_contexts/profile/middlewares/locales.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -24,18 +24,18 @@
  */
 import { EVASBaseFactory } from '@twyr/framework-classes';
 import { createErrorForPropagation } from '@twyr/error-serializer';
-import { BaseMiddleware } from 'baseclass:middleware';
+import { ServerUserBaseMiddleware } from 'baseclass:middleware';
 
 /**
- * @class Roles
- * @extends BaseMiddleware
+ * @class Locales
+ * @extends ServerUserBaseMiddleware
  *
  * @param {string} [location] - __dirname for this file in CJS, basically
  * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
  *
  * @classdesc The Middleware to handle login / logout / register
  */
-export class Roles extends BaseMiddleware {
+export class Locales extends ServerUserBaseMiddleware {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor(location, domainInterface) {
@@ -45,14 +45,14 @@ export class Roles extends BaseMiddleware {
 
 	// #region Protected Methods, to be overridden by derived classes
 	/**
-	 * @memberof Roles
+	 * @memberof Locales
 	 * @async
 	 * @instance
 	 * @override
 	 * @function
 	 * @name _registerApi
 	 *
-	 * @returns {null} - Nothing
+	 * @returns {null} - The array of API to be registered
 	 *
 	 * @description
 	 * Adds the API to the apiRegistry in the domainInterface
@@ -62,46 +62,38 @@ export class Roles extends BaseMiddleware {
 		const errors = [];
 
 		try {
+			const apiRegistry = this?.domainInterface?.apiRegistry;
 			let registerResolutions = [];
 
 			const baseApis = await super._registerApi?.();
 			for (const baseApi of baseApis ?? []) {
 				registerResolutions?.push?.(
-					this?.domainInterface?.apiRegistry?.register?.(
-						baseApi?.pattern,
-						baseApi?.handler
-					)
+					apiRegistry?.register?.(baseApi?.pattern, baseApi?.handler)
 				);
 			}
 
 			registerResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.register?.(
-					'ROLE::CREATE',
-					this.#createRole?.bind?.(this)
+				apiRegistry?.register?.(
+					'CREATE_LOCALE',
+					this.#createLocales?.bind?.(this)
 				)
 			);
 			registerResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.register?.(
-					'ROLE::GETALL',
-					this.#getAllRoles?.bind?.(this)
+				apiRegistry?.register?.(
+					'READ_LOCALE',
+					this.#readLocales?.bind?.(this)
 				)
 			);
 			registerResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.register?.(
-					'ROLE::GET',
-					this.#getRole?.bind?.(this)
+				apiRegistry?.register?.(
+					'UPDATE_LOCALE',
+					this.#updateLocales?.bind?.(this)
 				)
 			);
 			registerResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.register?.(
-					'ROLE::SET',
-					this.#setRole?.bind?.(this)
-				)
-			);
-			registerResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.register?.(
-					'ROLE::DELETE',
-					this.#deleteRole?.bind?.(this)
+				apiRegistry?.register?.(
+					'DELETE_LOCALE',
+					this.#deleteLocales?.bind?.(this)
 				)
 			);
 
@@ -126,7 +118,7 @@ export class Roles extends BaseMiddleware {
 	}
 
 	/**
-	 * @memberof Roles
+	 * @memberof Locales
 	 * @async
 	 * @instance
 	 * @override
@@ -143,36 +135,31 @@ export class Roles extends BaseMiddleware {
 		const errors = [];
 
 		try {
+			const apiRegistry = this?.domainInterface?.apiRegistry;
 			let unregisterResolutions = [];
 
 			unregisterResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.unregister?.(
-					'ROLE::DELETE',
-					this.#deleteRole?.bind?.(this)
+				apiRegistry?.unregister?.(
+					'DELETE_LOCALE',
+					this.#deleteLocales?.bind?.(this)
 				)
 			);
 			unregisterResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.unregister?.(
-					'ROLE::SET',
-					this.#setRole?.bind?.(this)
+				apiRegistry?.unregister?.(
+					'UPDATE_LOCALE',
+					this.#updateLocales?.bind?.(this)
 				)
 			);
 			unregisterResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.unregister?.(
-					'ROLE::GET',
-					this.#getRole?.bind?.(this)
+				apiRegistry?.unregister?.(
+					'READ_LOCALE',
+					this.#readLocales?.bind?.(this)
 				)
 			);
 			unregisterResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.unregister?.(
-					'ROLE::GETALL',
-					this.#getAllRoles?.bind?.(this)
-				)
-			);
-			unregisterResolutions?.push?.(
-				this?.domainInterface?.apiRegistry?.unregister?.(
-					'ROLE::CREATE',
-					this.#createRole?.bind?.(this)
+				apiRegistry?.unregister?.(
+					'CREATE_LOCALE',
+					this.#createLocales?.bind?.(this)
 				)
 			);
 
@@ -201,147 +188,83 @@ export class Roles extends BaseMiddleware {
 	// #endregion
 
 	// #region Handlers
-	async #createRole({ data }) {
-		// Step 0: Get the models
-		const TenantRoleModel = await this?._getModelsFromDomain?.([
-			{
+	async #createLocales({ user, data }) {
+		const createData = {
+			model: {
 				type: 'relational',
-				name: 'tenant-role'
-			}
-		]);
+				name: 'server-user-locale'
+			},
 
-		// Step 1: De-serialize from JSON API Format
-		const tenantRole =
-			await this?.domainInterface?.serializer?.deserializeAsync?.(
-				data?.data?.type,
-				data
-			);
+			user: user,
+			payload: data,
 
-		// Step 2: Insert into the database
-		let createdRole = await this?._executeWithBackOff?.(() => {
-			return TenantRoleModel?.query?.()?.insertAndFetch?.(tenantRole);
-		});
+			relationships: 'serverUser',
+			serializeType: 'server_user_locale',
 
-		// Step 3: Serialize to JSON API Format
-		createdRole = await this?.domainInterface?.serializer?.serializeAsync?.(
-			'tenant-role',
-			createdRole
-		);
+			eventName: 'SERVER_USER_LOCALE_CREATED'
+		};
 
-		// Finally, return..
+		const returnValue = await this?._createServerUserEntity?.(createData);
+		return returnValue;
+	}
+
+	async #readLocales({ user, localeId }) {
+		const fetchData = {
+			model: {
+				type: 'relational',
+				name: 'server-user-locale'
+			},
+
+			user: user,
+			entityId: localeId,
+
+			relationships: '[serverUser, locale]',
+			serializeType: 'server_user_locale'
+		};
+
+		const returnValue = await this?._readServerUserEntity?.(fetchData);
+		return returnValue;
+	}
+
+	async #updateLocales({ user, data }) {
+		const updateData = {
+			model: {
+				type: 'relational',
+				name: 'server-user-locale'
+			},
+
+			user: user,
+			payload: data,
+
+			relationships: 'serverUser',
+			serializeType: 'server_user_locale',
+
+			eventName: 'SERVER_USER_LOCALE_UPDATED'
+		};
+
+		const returnValue = await this?._updateServerUserEntity?.(updateData);
 		return {
-			status: 200,
-			body: createdRole
+			status: returnValue?.status,
+			body: returnValue?.body
 		};
 	}
 
-	async #getAllRoles() {
-		let TenantRoleModel = await this?._getModelsFromDomain?.([
-			{
+	async #deleteLocales({ user, localeId }) {
+		const deleteData = {
+			model: {
 				type: 'relational',
-				name: 'tenant-role'
-			}
-		]);
+				name: 'server-user-locale'
+			},
 
-		let tenantRoleData = await this?._executeWithBackOff?.(() => {
-			return TenantRoleModel?.query?.();
-		});
+			user: user,
+			entityId: localeId,
 
-		// Serialize to JSON API Format
-		tenantRoleData =
-			await this?.domainInterface?.serializer?.serializeAsync?.(
-				'tenant-role',
-				tenantRoleData
-			);
-
-		return {
-			status: 200,
-			body: tenantRoleData
+			eventName: 'SERVER_USER_LOCALE_DELETED'
 		};
-	}
 
-	async #getRole({ roleId }) {
-		let TenantRoleModel = await this?._getModelsFromDomain?.([
-			{
-				type: 'relational',
-				name: 'tenant-role'
-			}
-		]);
-
-		let tenantRoleData = await this?._executeWithBackOff?.(() => {
-			return TenantRoleModel?.query?.()?.findById?.(roleId);
-		});
-
-		// Serialize to JSON API Format
-		tenantRoleData =
-			await this?.domainInterface?.serializer?.serializeAsync?.(
-				'tenant-role',
-				tenantRoleData
-			);
-
+		const returnValue = await this?._deleteServerUserEntity?.(deleteData);
 		return {
-			status: 200,
-			body: tenantRoleData
-		};
-	}
-
-	async #setRole({ data }) {
-		let TenantRoleModel = await this?._getModelsFromDomain?.([
-			{
-				type: 'relational',
-				name: 'tenant-role'
-			}
-		]);
-
-		// Step 1: De-serialize from JSON API Format, and remove non-update-able
-		// fields
-		const tenantRoleData =
-			await this?.domainInterface?.serializer?.deserializeAsync?.(
-				data?.data?.type,
-				data
-			);
-
-		const tenantRoleId = tenantRoleData?.id;
-
-		delete tenantRoleData?.id;
-		delete tenantRoleData?.created_at;
-		delete tenantRoleData?.updated_at;
-
-		// Step 2: Update the database
-		let updatedTenantRole = await this?._executeWithBackOff?.(() => {
-			return TenantRoleModel?.query?.()?.patchAndFetchById?.(
-				tenantRoleId,
-				tenantRoleData
-			);
-		});
-
-		// Finally... return
-		updatedTenantRole =
-			await this?.domainInterface?.serializer?.serializeAsync?.(
-				'tenant-role',
-				updatedTenantRole
-			);
-
-		return {
-			status: 200,
-			body: updatedTenantRole
-		};
-	}
-
-	async #deleteRole({ roleId }) {
-		let TenantModel = await this?._getModelsFromDomain?.([
-			{
-				type: 'relational',
-				name: 'tenant-role'
-			}
-		]);
-
-		await this?._executeWithBackOff?.(() => {
-			return TenantModel?.query?.()?.deleteById?.(roleId);
-		});
-
-		return {
-			status: 204
+			status: returnValue?.status
 		};
 	}
 	// #endregion
@@ -351,7 +274,7 @@ export class Roles extends BaseMiddleware {
  * @class MiddlewareFactory
  * @extends EVASBaseFactory
  *
- * @classdesc The Roles Module Roles Middleware Class Factory.
+ * @classdesc The ServerUser Domain Profile Locales Middleware Class Factory.
  */
 export default class MiddlewareFactory extends EVASBaseFactory {
 	// #region Constructor
@@ -372,21 +295,21 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 	 *
 	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
 	 *
-	 * @returns {Roles} - The Roles middleware instance.
+	 * @returns {Locales} - The Locales middleware instance.
 	 *
 	 */
 	static async createInstances(domainInterface) {
-		if (!MiddlewareFactory.#tenantInstance) {
-			const tenantInstance = new Roles(
+		if (!MiddlewareFactory.#localeesInstance) {
+			const localeesInstance = new Locales(
 				MiddlewareFactory['$disk_unc'],
 				domainInterface
 			);
 
-			await tenantInstance?.load?.();
-			MiddlewareFactory.#tenantInstance = tenantInstance;
+			await localeesInstance?.load?.();
+			MiddlewareFactory.#localeesInstance = localeesInstance;
 		}
 
-		return MiddlewareFactory.#tenantInstance;
+		return MiddlewareFactory.#localeesInstance;
 	}
 
 	/**
@@ -399,11 +322,11 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 	 *
 	 * @returns {undefined} - Nothing.
 	 *
-	 * @description Clears the Roles instance
+	 * @description Clears the Locales instance
 	 */
 	static async destroyInstances() {
-		await MiddlewareFactory.#tenantInstance?.unload?.();
-		MiddlewareFactory.#tenantInstance = undefined;
+		await MiddlewareFactory.#localeesInstance?.unload?.();
+		MiddlewareFactory.#localeesInstance = undefined;
 
 		return;
 	}
@@ -421,15 +344,15 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 	 * @returns {string} - Name of this middleware.
 	 *
 	 * @description
-	 * Returns the name of this middleware - Roles
+	 * Returns the name of this middleware - Locales
 	 */
 	static get MiddlewareName() {
-		return 'Roles';
+		return 'Locales';
 	}
 	// #endregion
 
 	// #region Private Static Members
-	static #tenantInstance = undefined;
+	static #localeesInstance = undefined;
 	// #endregion
 }
 </code></pre>
@@ -440,7 +363,6 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -450,10 +372,15 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -462,13 +389,12 @@ export default class MiddlewareFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

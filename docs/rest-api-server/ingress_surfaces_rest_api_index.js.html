@@ -40,7 +40,6 @@ import { errorSerializer } from '@twyr/error-serializer';
  */
 // const DEFAULT_MAX_EVENT_LOOP_DELAY = 10_000; // 10 seconds
 const DEFAULT_MAX_PAYLOAD_SIZE = '10mb';
-
 const DEFAULT_POWERED_BY = 'Twyr';
 
 // const DEFAULT_RATE_LIMIT_INTERVAL = 5 * 60 * 1000; // 5 minutes
@@ -48,14 +47,11 @@ const DEFAULT_POWERED_BY = 'Twyr';
 
 const DEFAULT_SESSION_DOMAIN = '127.0.0.1';
 const DEFAULT_SESSION_ENCRYPTION_KEY = 'Th1s!sTheTwyrEntityAggregateServer';
-const DEFAULT_SESSION_KEY = 'twyr!entity!aggregate!server';
+const DEFAULT_SESSION_KEY = 'twyr.entity.aggregate.server';
 const DEFAULT_SESSION_MAX_AGE = 86_400_000;
 const DEFAULT_SERVER_PORT = 9090;
 
-const DEFAULT_SUBDOMAIN_MAPPING = {
-	'127.0.0.1': 'www',
-	localhost: 'www'
-};
+const MAX_API_VERSION = 1;
 
 /**
  * @class RestApi
@@ -113,20 +109,16 @@ class RestApi extends EVASBaseIngressSurface {
 			keys: configuration?.['SESSION_KEYS'] ?? [
 				DEFAULT_SESSION_ENCRYPTION_KEY
 			],
-			config: {
-				autoCommit: true,
-				domain:
-					configuration?.['SESSION_DOMAIN'] ?? DEFAULT_SESSION_DOMAIN,
-				key: configuration?.['SESSION_KEY'] ?? DEFAULT_SESSION_KEY,
-				maxAge:
-					configuration?.['SESSION_MAX_AGE'] ??
-					DEFAULT_SESSION_MAX_AGE,
-				overwrite: true,
-				httpOnly: true,
-				signed: true,
-				rolling: true,
-				renew: true
-			}
+			autoCommit: true,
+			domain: configuration?.['SESSION_DOMAIN'] ?? DEFAULT_SESSION_DOMAIN,
+			key: configuration?.['SESSION_KEY'] ?? DEFAULT_SESSION_KEY,
+			maxAge:
+				configuration?.['SESSION_MAX_AGE'] ?? DEFAULT_SESSION_MAX_AGE,
+			overwrite: true,
+			httpOnly: true,
+			signed: true,
+			rolling: true,
+			renew: true
 		};
 		sessionConfig.genid = function () {
 			return `${
@@ -147,7 +139,7 @@ class RestApi extends EVASBaseIngressSurface {
 		this.#koaApp?.on?.('error', this.#handleKoaAppError.bind(this));
 
 		this.#koaApp.keys = sessionConfig?.keys;
-		this.#koaApp.proxy = serverEnvironment === 'production';
+		this.#koaApp.proxy = global.serverEnvironment === 'production';
 
 		// Step 2.2: The Global Error Handler
 		this.#koaApp?.use?.(this.#errorLog?.bind?.(this));
@@ -179,67 +171,6 @@ class RestApi extends EVASBaseIngressSurface {
 			await next();
 		});
 
-		// Step 2.5: The security stuff... only in prod mode, though
-		// Blacklists, whitelists, csp, rate limits, etc.
-		/*
-		if (serverEnvironment === 'production') {
-			// Step 2.5.1: Check for blacklisted IPS from the Honeypot project
-			// TODO: Have to find a decent implementation of the Honeypot API
-
-			// Step 2.5.2: Content Security Policy, et al.
-			this.#koaApp?.use?.(
-				helmet?.({
-					hidePoweredBy: false,
-					hpkp: false,
-					hsts: false
-				})		this.#sqldbInstances?.forEach?.((sqlDatabaseInstance) => {
-
-			);
-
-			// Step 2.5.3: Check if IP is whitelisted
-			let koaCors = await import('@koa/cors');
-			koaCors = koaCors?.['default'];
-
-			this.#koaApp?.use?.(
-				koaCors?.({
-					credentials: true,
-					keepHeadersOnError: true
-				})
-			);
-
-			// Step 2.5.4: Whitelisted, but asking for too much?
-			// Sorry, dude... gotta limit you from using all the resources
-			let koaRateLimiter = await import('koa-ratelimit');
-			koaRateLimiter = koaRateLimiter?.['default'];
-
-			this.#koaApp?.use?.(
-				koaRateLimiter?.({
-					db: cache,
-					duration:
-						configuration?.['RATE_LIMIT_INTERVAL'] ??
-						DEFAULT_RATE_LIMIT_INTERVAL,
-					max:
-						configuration?.['RATE_LIMIT_MAX_REQUESTS'] ??
-						DEFAULT_RATE_LIMIT_MAX_REQUESTS
-				})
-			);
-
-			// Step 2.5.5: Overload protection... really, bro
-			// not your fault - I just can't ...
-			let overloadProtection = await import('overload-protection');
-			overloadProtection = overloadProtection?.['default'];
-
-			const koaProtect = overloadProtection?.('koa', {
-				maxEventLoopDelay:
-					configuration?.['MAX_EVENT_LOOP_DELAY'] ??
-					DEFAULT_MAX_EVENT_LOOP_DELAY,
-				logging: logger
-			});
-
-			this.#koaApp?.use?.(koaProtect);
-		}
-		*/
-
 		// Step 2.6: Add in the device identifier
 		let device = await import('device');
 		device = device?.['default'];
@@ -249,10 +180,7 @@ class RestApi extends EVASBaseIngressSurface {
 			await next();
 		});
 
-		// Step 2.7: Figure out which tenant this is..
-		this.#koaApp?.use?.(this.#setTenant?.bind?.(this));
-
-		// Step 2.8: Sessions
+		// Step 2.7: Sessions
 		let koaSessionRedisStore = await import('koa-redis');
 		koaSessionRedisStore = koaSessionRedisStore?.['default'];
 
@@ -280,13 +208,13 @@ class RestApi extends EVASBaseIngressSurface {
 
 		this.#koaApp.use?.(koaSession);
 
-		// Step 2.9: Passport based authentication...
+		// Step 2.8: Passport based authentication...
 		const authRepository = await this?.iocContainer?.resolve?.('Auth');
 
 		this.#koaApp?.use?.(authRepository?.initialize?.());
 		this.#koaApp?.use?.(authRepository?.session?.());
 
-		// Step 2.10: The body parsers...
+		// Step 2.9: The body parsers...
 		const bodyParserConfig = {
 			jsonLimit:
 				configuration?.['MAX_PAYLOAD_SIZE'] ?? DEFAULT_MAX_PAYLOAD_SIZE,
@@ -306,14 +234,16 @@ class RestApi extends EVASBaseIngressSurface {
 
 		this.#koaApp?.use?.(koaBodyParser(bodyParserConfig));
 
-		// Step 2.11: The audit log hook...
-		this.#koaApp?.use(this.#auditLog?.bind?.(this));
+		// Step 2.10: The audit log hook...
+		this.#koaApp?.use?.(this.#auditLog?.bind?.(this));
 
 		// Finally, add in the router...
 		let Router = await import('@koa/router');
 		Router = Router?.['default'];
 
-		this.#router = new Router();
+		this.#router = new Router({
+			prefix: `/api/v${configuration?.['MAX_API_VERSION'] ?? MAX_API_VERSION}`
+		});
 
 		this.#koaApp?.use?.(this.#router.routes());
 		this.#koaApp?.use?.(this.#router.allowedMethods());
@@ -391,27 +321,31 @@ class RestApi extends EVASBaseIngressSurface {
 		return new Promise((resolve, reject) => {
 			this.#protocolServer?.listen?.(listenPort, () => {
 				try {
-					if (serverEnvironment === 'production') {
+					if (global.serverEnvironment === 'production') {
 						resolve?.();
 						return;
 					}
 
 					console?.info?.(
 						`\n${this?.name}::start: ${JSON?.stringify?.(
-							this.#router?.stack?.map?.((route) => {
-								const routeMethodPaths = route?.methods
-									?.map((method) => {
-										if (method === 'HEAD') return;
-										return `${method} ${route?.path}`;
-									})
-									?.filter((routeMethodPath) => {
-										return !!routeMethodPath;
-									});
+							this.#router?.stack
+								?.map?.((route) => {
+									const routeMethodPaths = route?.methods
+										?.map((method) => {
+											if (method === 'HEAD') return;
+											return `${method} ${route?.path}`;
+										})
+										?.filter((routeMethodPath) => {
+											return !!routeMethodPath;
+										});
 
-								return routeMethodPaths?.length > 1
-									? routeMethodPaths
-									: routeMethodPaths?.shift?.();
-							}),
+									return routeMethodPaths?.length > 1
+										? routeMethodPaths
+										: routeMethodPaths?.shift?.();
+								})
+								?.filter((route) => {
+									return !!route;
+								}),
 							undefined,
 							'\t'
 						)}`
@@ -499,119 +433,12 @@ class RestApi extends EVASBaseIngressSurface {
 		}
 	}
 
-	async #setTenant(ctxt, next) {
-		// Step 0: Get the dependencies...
-		const cache = await this?.iocContainer?.resolve?.('Cache');
-		const database = await this?.iocContainer?.resolve?.('SQLDatabase');
-
-		let configuration = this.configuration;
-		if (!configuration) {
-			const configRepository =
-				await this?.iocContainer?.resolve?.('Configuration');
-
-			configuration = await configRepository?.getConfig?.(this?.name);
-		}
-
-		// Step 1: Figure out the sub-domain from the Koa context
-		let tenantSubDomain =
-			configuration?.['SUBDOMAIN_MAPPING']?.[
-				configuration?.['SESSION_DOMAIN'] ?? 'DEFAULT_SESSION_DOMAIN'
-			] ??
-			DEFAULT_SUBDOMAIN_MAPPING?.[
-				configuration?.['SESSION_DOMAIN'] ?? 'DEFAULT_SESSION_DOMAIN'
-			];
-
-		if (ctxt.subdomains.length === 1) tenantSubDomain = ctxt.subdomains[0];
-
-		if (ctxt.subdomains.length > 1) {
-			ctxt.subdomains.reverse();
-			tenantSubDomain = ctxt.subdomains.join('.');
-			ctxt.subdomains.reverse();
-		}
-
-		// Step 2: See if the sub-domain is an alias, and modify accordingly
-		tenantSubDomain =
-			// eslint-disable-next-line security/detect-object-injection
-			configuration?.['SUBDOMAIN_MAPPING']?.[tenantSubDomain] ??
-			// eslint-disable-next-line security/detect-object-injection
-			DEFAULT_SUBDOMAIN_MAPPING?.[tenantSubDomain] ??
-			tenantSubDomain;
-
-		// Step 3: Get tenant from the cache if already present
-		let tenant = ctxt?.get?.['tenant'];
-		if (!tenant) {
-			tenant = await cache?.get?.(
-				`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`
-			);
-		}
-
-		if (tenant) {
-			tenant = JSON?.parse?.(tenant);
-
-			ctxt.state.tenant = tenant;
-			ctxt.request.headers['tenant'] = JSON?.stringify?.(tenant);
-
-			await next?.();
-			return;
-		}
-
-		// Step 4: Get tenant from the database
-		if (!tenant) {
-			tenant = await database?.raw?.(
-				`SELECT id, name, sub_domain FROM tenants WHERE sub_domain = ?`,
-				[tenantSubDomain]
-			);
-
-			tenant = tenant?.rows?.shift?.();
-		}
-
-		// Step 5: Throw if we cannot find a tenant
-		if (!tenant) {
-			throw new Error(`Tenant ${tenantSubDomain} not found`);
-		}
-
-		// Step 6: Setup the domains / features this tenant has access to
-		let tenantModules = await database?.raw?.(
-			`SELECT id, parent_id, name from artifacts WHERE id IN (SELECT artifact_id FROM tenants_artifacts WHERE tenant_id = ?) AND artifact_type_id &lt;> (SELECT id FROM artifact_type_master WHERE name = 'server')`,
-			[tenant?.id]
-		);
-
-		tenant['domains'] = tenantModules?.rows;
-
-		// Step 7: Store tenant stuff in the cache for faster access from the next request
-		const cacheMulti = await cache?.multi?.();
-		cacheMulti?.set?.(
-			`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`,
-			JSON?.stringify?.(tenant)
-		);
-		cacheMulti?.expire?.(
-			`twyr!entity!aggregate!server!tenant!${tenantSubDomain}`,
-			serverEnvironment === 'development' ? 3600 : 86_400
-		);
-
-		await cacheMulti?.exec?.();
-
-		ctxt.state.tenant = tenant;
-		ctxt.request.headers['tenant'] = JSON?.stringify?.(tenant);
-
-		await next?.();
-	}
-
 	async #auditLog(ctxt, next) {
 		let safeJsonStringify = await import('safe-json-stringify');
 		safeJsonStringify = safeJsonStringify?.['default'];
 
-		const requestHeaders = {};
-		for (const requestHeader in ctxt?.request?.headers ?? {}) {
-			if (requestHeader === 'tenant') continue;
-
-			// eslint-disable-next-line security/detect-object-injection
-			requestHeaders[requestHeader] = JSON?.parse?.(
-				// eslint-disable-next-line security/detect-object-injection
-				safeJsonStringify?.(ctxt?.request?.headers?.[requestHeader])
-			);
-		}
-
+		// Step 1: Define the audit log data structure, and populate
+		// the basics
 		const logMessageMeta = {
 			id: ctxt?.state?.id,
 
@@ -621,16 +448,11 @@ class RestApi extends EVASBaseIngressSurface {
 
 			user: {
 				id: ctxt?.state?.user?.id,
-				name: `${ctxt?.state?.user?.['first_name']} ${ctxt?.state?.user?.['last_name']}`
-			},
-			tenant: {
-				id: ctxt?.state?.tenant?.id,
-				sub_domain: ctxt?.state?.tenant?.sub_domain,
-				name: ctxt?.state?.tenant?.name
+				name: `${ctxt?.state?.user?.['first_name']} ${ctxt?.state?.user?.['last_name']}`,
+				role: ctxt?.session?.passport?.user?.['role'] ?? '???'
 			},
 
 			'request-meta': {
-				headers: requestHeaders,
 				method: ctxt?.request?.method,
 				url: ctxt?.request?.url,
 				ip: ctxt?.request?.ip,
@@ -653,6 +475,7 @@ class RestApi extends EVASBaseIngressSurface {
 			error: undefined
 		};
 
+		// Step 2: Now, execute the request, and log the time taken
 		const startTime = process?.hrtime?.bigint?.();
 		logMessageMeta['start_time'] = new Date()?.valueOf?.();
 		try {
@@ -663,27 +486,39 @@ class RestApi extends EVASBaseIngressSurface {
 		logMessageMeta['end_time'] = new Date()?.valueOf?.();
 		const endTime = process?.hrtime?.bigint?.();
 
+		logMessageMeta['duration_in_ms'] = convertHrtime?.(
+			endTime - startTime
+		)?.milliseconds;
+
+		// Step 3: Fill in the user details, if needed...
+		// This is here because, in case of the "login" call, the user
+		// is populated only after the login has been successfully executed
 		if (!logMessageMeta?.user?.id) {
 			logMessageMeta['user'] = {
 				id: ctxt?.state?.user?.['id'] ?? '???',
 				name: `${ctxt?.state?.user?.['first_name'] ?? '???'} ${
 					ctxt?.state?.user?.['last_name'] ?? '???'
-				}`
+				}`,
+				role: ctxt?.session?.passport?.user?.['role'] ?? '???'
 			};
 		}
 
-		if (!logMessageMeta?.tenant?.id) {
-			logMessageMeta['tenant'] = {
-				id: ctxt?.state?.tenant?.['id'] ?? '???',
-				name: ctxt?.state?.tenant?.['name'] ?? '???',
-				subDomain: ctxt?.state?.tenant?.['sub_domain'] ?? '???'
-			};
+		// Step 4: Fill in the request header details
+		// We do this here, instead of earlier, to ensure that any
+		// modifications to the headers by downstream middlewares
+		// are also captured - for example, the "userRole" header
+		const requestHeaders = {};
+		for (const requestHeader in ctxt?.request?.headers ?? {}) {
+			// eslint-disable-next-line security/detect-object-injection
+			requestHeaders[requestHeader] = JSON?.parse?.(
+				// eslint-disable-next-line security/detect-object-injection
+				safeJsonStringify?.(ctxt?.request?.headers?.[requestHeader])
+			);
 		}
 
-		logMessageMeta['duration_in_ms'] = convertHrtime?.(
-			endTime - startTime
-		)?.milliseconds;
+		logMessageMeta['request-meta']['headers'] = requestHeaders;
 
+		// Step 5: Fill in the response headers / data / error details
 		logMessageMeta['response-meta']['headers'] = JSON?.parse?.(
 			safeJsonStringify?.(ctxt?.response?.headers)
 		);
@@ -716,6 +551,7 @@ class RestApi extends EVASBaseIngressSurface {
 			);
 		}
 
+		// Finally, publish the audit log and throw error if any
 		const auditRepository = await this?.iocContainer?.resolve?.('Audit');
 		auditRepository?.publish?.(logMessageMeta);
 
@@ -889,7 +725,6 @@ export default class IngressSurfaceFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -899,10 +734,15 @@ export default class IngressSurfaceFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -911,13 +751,12 @@ export default class IngressSurfaceFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

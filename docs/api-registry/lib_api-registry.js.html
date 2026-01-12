@@ -73,7 +73,7 @@ export class APIRegistry extends EVASBaseClass {
 				`Child registry with ${name} is already registered`
 			);
 
-		this.#childRegistries?.add?.(name, apiRegistry);
+		this.#childRegistries?.set?.(name, apiRegistry);
 	}
 
 	/**
@@ -103,7 +103,9 @@ export class APIRegistry extends EVASBaseClass {
 		if (!this.#apiMap?.has?.(pattern)) this.#apiMap?.set?.(pattern, []);
 
 		const apiList = this.#apiMap?.get?.(pattern);
-		if (!apiList?.find?.(api)) apiList?.push?.(api);
+		if (apiList?.indexOf?.(api) >= 0) return true;
+
+		apiList?.push?.(api);
 
 		if (serverEnvironment === 'production') return true;
 		console?.info?.(
@@ -118,30 +120,60 @@ export class APIRegistry extends EVASBaseClass {
 	 * @async
 	 * @instance
 	 * @function
-	 * @name resolve
+	 * @name execute
 	 *
-	 * @param {string} pattern - The pattern to be executed.
+	 * @param {string} pattern - The pattern to be resolved.
+	 * @param {Object} data - The parameters to be passed to the API.
 	 *
-	 * @returns {Array} The results of the execution.
+	 * @returns {Object} The return value(s) of the API that match the pattern
 	 *
 	 * @description
-	 * Resolves the pattern asked for, and returns all the API
-	 * handlers that can respond to it - across the entire server
-	 * codebase
+	 * Executes all the API that respond to the pattern, and returns
+	 * the results
+	 *
 	 */
-	async resolve(pattern) {
-		const patternLocal = pattern?.toLocaleUpperCase?.()?.split?.('::');
+	async execute(pattern, ...data) {
+		// Step 1: Get the API List for this pattern
+		let apiList = await this?._resolve(pattern);
 
-		// Step 1: Check if we can resolve it locally...
-		let apis = await this?._find?.(patternLocal);
-		if (apis?.length > 0) return [...apis];
-		if (!this.#parentRegistry) return [...apis];
+		// Step 2: Sanity checks
+		if (!apiList) return null;
+		if (!Array.isArray(apiList)) return null;
+		if (apiList.length === 0) return null;
 
-		// Step 2: Ask the parent to resolve it...
-		apis = await this.#parentRegistry?.resolve?.(pattern);
-		return apis;
+		// Step 3: One API for this pattern...
+		if (apiList.length === 1) {
+			const api = apiList?.shift?.();
+			const results = await api?.(...data);
+			return results;
+		}
+
+		// Step 4: Multiple API for the pattern...
+		const promises = [];
+		const results = [];
+		const errors = [];
+
+		for (const api of apiList) {
+			promises?.push?.(api?.(...data));
+		}
+
+		const promiseResolutions = await Promise?.allSettled?.(promises);
+		for (const resolution of promiseResolutions) {
+			if (resolution?.status === 'fulfilled') {
+				results?.push?.(resolution?.value);
+				continue;
+			}
+
+			errors?.push?.(resolution?.reason);
+		}
+
+		if (errors?.length) {
+			throw new AggregateError(errors, `Error executing ${pattern}`);
+		}
+
+		if (results?.length > 1) return results;
+		return results?.pop?.();
 	}
-
 	/**
 	 * @memberof APIRegistry
 	 * @async
@@ -216,6 +248,38 @@ export class APIRegistry extends EVASBaseClass {
 	 * @async
 	 * @instance
 	 * @function
+	 * @name _resolve
+	 *
+	 * @param {string} pattern - The pattern to be executed.
+	 *
+	 * @returns {Array} The results of the execution.
+	 *
+	 * @description
+	 * Resolves the pattern asked for, and returns all the API
+	 * handlers that can respond to it - across the entire server
+	 * codebase
+	 *
+	 * TREAT THIS AN INTERNAL METHOD ONLY. CALL IT DIRECTLY AT YOUR OWN RISK.
+	 *
+	 */
+	async _resolve(pattern) {
+		const patternLocal = pattern?.toLocaleUpperCase?.()?.split?.('::');
+
+		// Step 1: Check if we can resolve it locally...
+		let apis = await this?._find?.(patternLocal);
+		if (apis?.length > 0) return [...apis];
+		if (!this.#parentRegistry) return [...apis];
+
+		// Step 2: Ask the parent to resolve it...
+		apis = await this.#parentRegistry?._resolve?.(pattern);
+		return apis;
+	}
+
+	/**
+	 * @memberof APIRegistry
+	 * @async
+	 * @instance
+	 * @function
 	 * @name _find
 	 *
 	 * @param {string} pattern - The pattern to be executed.
@@ -232,10 +296,23 @@ export class APIRegistry extends EVASBaseClass {
 	async _find(pattern) {
 		const patternScope = pattern?.shift?.();
 
+		// Sanity check...
+		if (!patternScope) return [];
+
+		// Step 0: Trivial optimization - see if the pattern is the name of a registered API...
+		if (pattern?.length === 0) {
+			const registeredApis = this.#apiMap?.get?.(patternScope);
+			if (registeredApis?.length > 0) {
+				return registeredApis;
+			}
+		}
+
 		// Step 1: Check if the pattern array's first element is the scope name...
-		if (patternScope === this.#scopeName) {
-			const apiPattern = pattern?.join?.('::');
-			const registeredApis = this.#apiMap?.get?.(apiPattern) ?? [];
+		if (patternScope !== this.#scopeName) return [];
+
+		const apiPattern = pattern?.join?.('::');
+		const registeredApis = this.#apiMap?.get?.(apiPattern) ?? [];
+		if (registeredApis?.length > 0) {
 			return registeredApis;
 		}
 

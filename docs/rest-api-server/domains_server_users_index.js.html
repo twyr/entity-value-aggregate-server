@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: domains/admin/bounded_contexts/tenant/surfaces/query/basics.js</title>
+		<title>JSDoc: Source: domains/server_users/index.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: domains/admin/bounded_contexts/tenant/surfaces/query/basics.js</h1>
+			<h1 class="page-title">Source: domains/server_users/index.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -23,18 +23,19 @@
  * @ignore
  */
 import { EVASBaseFactory } from '@twyr/framework-classes';
-import { BaseSurface } from 'baseclass:surface';
+import { BaseDomain } from 'baseclass:domain';
 
 /**
- * @class Basics
- * @extends BaseSurface
+ * @class ServerUsers
+ * @extends BaseDomain
  *
  * @param {string} [location] - __dirname for this file in CJS, basically
  * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
  *
- * @classdesc The Basics Surface for the Tenant Module in the Admin domain.
+ * @classdesc An Base Domain for this Server.
+ *
  */
-export class Basics extends BaseSurface {
+export class ServerUsers extends BaseDomain {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor(location, domainInterface) {
@@ -42,151 +43,138 @@ export class Basics extends BaseSurface {
 	}
 	// #endregion
 
-	// #region Protected Methods, to be overridden by derived classes
+	// #region Startup / Shutdown
 	/**
-	 * @memberof Basics
+	 * @memberof ServerUsers
 	 * @async
 	 * @instance
 	 * @override
 	 * @function
-	 * @name _registerSurface
+	 * @name load
 	 *
-	 * @returns {null} - Nothing
+	 * @returns {null} - Nothing.
 	 *
-	 * @description
-	 * Adds the route definitions and handlers for this surface to
-	 * the Rest API Router
+	 * @description Loads / Initializes / Starts-up sub-artifacts.
 	 *
 	 */
-	async _registerSurface() {
-		const baseRoutes = await super._registerSurface?.();
-
-		baseRoutes?.push?.({
-			httpMethod: 'GET',
-			path: '/all',
-			middlewares: [
-				await this?._rbac?.('admin-tenant-basics-read'),
-				await this?._abac?.()
-			],
-			handler: this.#getAllTenants?.bind?.(this)
-		});
-
-		baseRoutes?.push?.({
-			httpMethod: 'GET',
-			path: '/:tenantId',
-			middlewares: [
-				await this?._rbac?.('admin-tenant-basics-read'),
-				await this?._abac?.()
-			],
-			handler: this.#getTenant?.bind?.(this)
-		});
-
-		return baseRoutes;
+	async load() {
+		await super.load?.();
+		return;
 	}
 
 	/**
-	 * @memberof Basics
+	 * @memberof ServerUsers
 	 * @async
 	 * @instance
 	 * @override
 	 * @function
-	 * @name _unregisterSurface
+	 * @name unload
 	 *
-	 * @returns {null} - Nothing
+	 * @returns {null} - Nothing.
 	 *
-	 * @description
-	 * Removes the route definitions and handlers for this surface from
-	 * the Rest API Router
+	 * @description Shuts-down / Un-initializes / Un-loads sub-artifacts.
 	 *
 	 */
-	async _unregisterSurface() {
-		await super._unregisterSurface?.();
+	async unload() {
+		await super.unload?.();
 		return;
 	}
 	// #endregion
 
-	// #region Route Handlers
-	async #getAllTenants(ctxt) {
-		const tenant = await this?.domainInterface?.apiRegistry?.execute?.(
-			'TENANT_BASICS::GETALL',
-			{
-				tenant: ctxt?.state?.tenant,
-				user: ctxt?.state?.user
-			}
-		);
-
-		ctxt.status = tenant?.status;
-		ctxt.body = tenant?.body;
-	}
-
-	async #getTenant(ctxt) {
-		const tenant = await this?.domainInterface?.apiRegistry?.execute?.(
-			'TENANT_BASICS::GET',
-			{
-				tenant: ctxt?.state?.tenant,
-				user: ctxt?.state?.user,
-				tenantId:
-					ctxt?.request?.params?.tenantId ?? ctxt?.state?.tenant?.id
-			}
-		);
-
-		ctxt.status = tenant?.status;
-		ctxt.body = tenant?.body;
-	}
-	// #endregion
-
-	// #region ABAC implementation
+	// #region "Protected" method overrides
 	/**
-	 * @memberof Basics
+	 * @memberof ServerUsers
 	 * @async
 	 * @instance
 	 * @override
 	 * @function
-	 * @name _abac
+	 * @name _registerSerializerTypes
 	 *
-	 * @returns {Function} - Koa Middleware
+	 * @returns {null} - Nothing.
 	 *
 	 * @description
-	 * Used by artifact implementations for adding a ABAC middleware
-	 * in their route definitions - as part of the _registerSurface
-	 * implementation - to check the User permissions before reaching
-	 * the actual handler
-	 *
-	 * Unlike the _rbac() method, this has to be a custom implementation
-	 * for each domain / bounded context / surface combination - the default
-	 * implementation (here) creating the no-op middleware for demo
-	 * purposes
+	 * Registers the JSON:API serializer types
+	 * for the current domain.
 	 *
 	 */
-	async _abac() {
-		const assetAccessCheckerMiddleware =
-			async function assetAccessCheckerMiddleware(ctxt, next) {
-				if (
-					['admin', 'www']?.includes?.(
-						ctxt?.state?.tenant?.['sub_domain']
-					)
-				) {
-					await next?.();
-					return;
+	_registerSerializerTypes(serializer) {
+		super._registerSerializerTypes?.(serializer);
+
+		// Step 0: Register the master table models
+		serializer?.register?.('contact_type_master', {
+			relationships: {
+				serverUserContacts: {
+					type: 'server_user_contact'
 				}
+			}
+		});
 
-				throw new Error(
-					`Tenant operations can be accessed only from the www tenant`
-				);
-			};
+		serializer?.register?.('gender_master', {
+			relationships: {
+				serverUser: {
+					type: 'server_user'
+				}
+			}
+		});
 
-		return assetAccessCheckerMiddleware?.bind?.(this);
+		serializer?.register?.('locale_master', {
+			relationships: {
+				serverUserLocales: {
+					type: 'server_user_locale'
+				}
+			}
+		});
+
+		// Step 1: Register the ServerUser model
+		serializer?.register?.('server_user', {
+			blacklist: ['password'],
+			relationships: {
+				contacts: {
+					type: 'server_user_contact'
+				},
+				locales: {
+					type: 'server_user_locale'
+				},
+				gender: {
+					type: 'gender_master'
+				}
+			}
+		});
+
+		// Step 2: Register the ServerUser Contact model
+		serializer?.register?.('server_user_contact', {
+			relationships: {
+				serverUser: {
+					type: 'server_user'
+				},
+				contactType: {
+					type: 'contact_type_master'
+				}
+			}
+		});
+
+		// Step 4: Register the ServerUser Locale model
+		serializer?.register?.('server_user_locale', {
+			relationships: {
+				serverUser: {
+					type: 'server_user'
+				},
+				locale: {
+					type: 'locale_master'
+				}
+			}
+		});
 	}
 	// #endregion
 }
 
 /**
- * @class SurfaceFactory
+ * @class DomainFactory
  * @extends EVASBaseFactory
  *
- * @classdesc The Session Manager Module Basics Surface Class Factory.
+ * @classdesc The ServerUser Domain Class Factory.
  */
-export default class SurfaceFactory extends EVASBaseFactory {
+export default class DomainFactory extends EVASBaseFactory {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor() {
@@ -196,7 +184,7 @@ export default class SurfaceFactory extends EVASBaseFactory {
 
 	// #region Lifecycle API
 	/**
-	 * @memberof SurfaceFactory
+	 * @memberof DomainFactory
 	 * @async
 	 * @static
 	 * @override
@@ -205,25 +193,25 @@ export default class SurfaceFactory extends EVASBaseFactory {
 	 *
 	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
 	 *
-	 * @returns {Basics} - The Basics surface instance.
+	 * @returns {ServerUsers} - The ServerUsers domain instance.
 	 *
 	 */
 	static async createInstances(domainInterface) {
-		if (!SurfaceFactory.#basicsInstance) {
-			const basicsInstance = new Basics(
-				SurfaceFactory['$disk_unc'],
+		if (!DomainFactory.#serverUserDomainInstance) {
+			const serverUserDomainInstance = new ServerUsers(
+				DomainFactory['$disk_unc'],
 				domainInterface
 			);
 
-			await basicsInstance?.load?.();
-			SurfaceFactory.#basicsInstance = basicsInstance;
+			await serverUserDomainInstance?.load?.();
+			DomainFactory.#serverUserDomainInstance = serverUserDomainInstance;
 		}
 
-		return SurfaceFactory.#basicsInstance;
+		return DomainFactory.#serverUserDomainInstance;
 	}
 
 	/**
-	 * @memberof SurfaceFactory
+	 * @memberof DomainFactory
 	 * @async
 	 * @static
 	 * @override
@@ -232,11 +220,11 @@ export default class SurfaceFactory extends EVASBaseFactory {
 	 *
 	 * @returns {undefined} - Nothing.
 	 *
-	 * @description Clears the Basics instance
+	 * @description Clears the ServerUser Domain instance
 	 */
 	static async destroyInstances() {
-		await SurfaceFactory.#basicsInstance?.unload?.();
-		SurfaceFactory.#basicsInstance = undefined;
+		await DomainFactory.#serverUserDomainInstance?.unload?.();
+		DomainFactory.#serverUserDomainInstance = undefined;
 
 		return;
 	}
@@ -244,25 +232,25 @@ export default class SurfaceFactory extends EVASBaseFactory {
 
 	// #region Getters
 	/**
-	 * @memberof SurfaceFactory
+	 * @memberof DomainFactory
 	 * @async
 	 * @static
 	 * @override
 	 * @function
-	 * @name SurfaceName
+	 * @name DomainName
 	 *
-	 * @returns {string} - Name of this surface.
+	 * @returns {string} - Name of this domain.
 	 *
 	 * @description
-	 * Returns the name of this surface - Basics
+	 * Returns the name of this domain - ServerUsers
 	 */
-	static get SurfaceName() {
-		return 'Basics';
+	static get DomainName() {
+		return 'ServerUsers';
 	}
 	// #endregion
 
 	// #region Private Static Members
-	static #basicsInstance = undefined;
+	static #serverUserDomainInstance = undefined;
 	// #endregion
 }
 </code></pre>
@@ -273,7 +261,6 @@ export default class SurfaceFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -283,10 +270,15 @@ export default class SurfaceFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -295,13 +287,12 @@ export default class SurfaceFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

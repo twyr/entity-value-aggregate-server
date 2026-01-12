@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>JSDoc: Source: domains/portal/bounded_contexts/session_manager/surfaces/command/main.js</title>
+		<title>JSDoc: Source: domains/server_users/bounded_contexts/profile/surfaces/command/contact.js</title>
 		<script src="scripts/prettify/prettify.js"> </script>
 		<script src="scripts/prettify/lang-css.js"> </script>
 		<!--[if lt IE 9]>
@@ -15,7 +15,7 @@
 
 	<body>
 		<div id="main">
-			<h1 class="page-title">Source: domains/portal/bounded_contexts/session_manager/surfaces/command/main.js</h1>
+			<h1 class="page-title">Source: domains/server_users/bounded_contexts/profile/surfaces/command/contact.js</h1>
 			<section>
 				<article>
 					<pre class="prettyprint source linenums"><code>/**
@@ -26,32 +26,53 @@ import { EVASBaseFactory } from '@twyr/framework-classes';
 import { BaseSurface } from 'baseclass:surface';
 
 /**
- * @class Main
+ * @class Contact
  * @extends BaseSurface
  *
  * @param {string} [location] - __dirname for this file in CJS, basically
  * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
  *
- * @classdesc The Main Surface for the Session Manager Module.
+ * @classdesc The Contact Surface for the ServerUser Domain Profile.
  */
-export class Main extends BaseSurface {
+export class Contact extends BaseSurface {
 	// #region Constructor
 	// eslint-disable-next-line jsdoc/require-jsdoc
 	constructor(location, domainInterface) {
 		super(location, domainInterface);
 	}
-	//Profile #endregion
+	// #endregion
+
+	// #region Lifecycle Methods
+	/**
+	 * @memberof Contact
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name load
+	 *
+	 * @returns {null} - Nothing
+	 *
+	 * @description
+	 * Sets the user role in the request headers for access control purposes
+	 * by passing it in to the base class load method
+	 *
+	 */
+	async load() {
+		await super.load?.();
+	}
+	// #endregion
 
 	// #region Protected Methods, to be overridden by derived classes
 	/**
-	 * @memberof Main
+	 * @memberof Contact
 	 * @async
 	 * @instance
 	 * @override
 	 * @function
 	 * @name _registerSurface
 	 *
-	 * @returns {null} - Nothing
+	 * @returns {null} - The routes to be added to the Rest API Router
 	 *
 	 * @description
 	 * Adds the route definitions and handlers for this surface to
@@ -59,29 +80,34 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async _registerSurface() {
-		const authRepository =
-			await this?.domainInterface?.iocContainer?.resolve?.('Auth');
 		const baseRoutes = await super._registerSurface?.();
 
 		baseRoutes?.push?.({
 			httpMethod: 'POST',
-			path: '/login',
-			middlewares: [authRepository?.authenticate?.('server-local')],
-			handler: this.#login?.bind?.(this)
+			path: '/create',
+			middlewares: [await this?._rbac?.('registered')],
+			handler: this.#createContact?.bind?.(this)
 		});
 
 		baseRoutes?.push?.({
-			httpMethod: 'POST',
-			path: '/logout',
+			httpMethod: 'PATCH',
+			path: '/update',
 			middlewares: [await this?._rbac?.('registered')],
-			handler: this.#logout?.bind?.(this)
+			handler: this.#updateContact?.bind?.(this)
+		});
+
+		baseRoutes?.push?.({
+			httpMethod: 'DEL',
+			path: '/delete/:contactId',
+			middlewares: [await this?._rbac?.('registered')],
+			handler: this.#deleteContact?.bind?.(this)
 		});
 
 		return baseRoutes;
 	}
 
 	/**
-	 * @memberof Main
+	 * @memberof Contact
 	 * @async
 	 * @instance
 	 * @override
@@ -102,42 +128,98 @@ export class Main extends BaseSurface {
 	// #endregion
 
 	// #region Route Handlers
-	async #login(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) return;
-
-		const apiRegistry = this?.domainInterface?.apiRegistry;
-
-		let postLoginProcessor = await apiRegistry?.resolve?.(
-			'SESSIONMANAGER::LOGIN'
-		);
-		if (postLoginProcessor?.length === 1) {
-			postLoginProcessor = postLoginProcessor?.shift?.();
+	/**
+	 * @memberof Contact
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name #createContact
+	 *
+	 * @returns {null} - Nothing
+	 *
+	 * @description
+	 * Creates a new contact for the server-user with the id given
+	 *
+	 */
+	async #createContact(ctxt) {
+		if (!ctxt?.isAuthenticated?.()) {
+			throw new Error(`No active session`);
 		}
 
-		const postLoginStatus = await postLoginProcessor?.({
-			tenant: ctxt?.state?.tenant,
-			user: ctxt?.state?.user
+		const apiRegistry = this?.domainInterface?.apiRegistry;
+		const contactStatus = await apiRegistry?.execute?.('CREATE_CONTACT', {
+			user: ctxt?.state?.user,
+			data: ctxt.request.body
 		});
 
-		ctxt.status = postLoginStatus?.status;
-		ctxt.body = postLoginStatus?.body;
+		ctxt.status = contactStatus?.status;
+		ctxt.body = contactStatus?.body;
 	}
 
-	async #logout(ctxt) {
-		if (!ctxt.isAuthenticated()) throw new Error(`No active session`);
-
-		const apiRegistry = this?.domainInterface?.apiRegistry;
-		let logoutProcessor = await apiRegistry?.resolve?.(
-			'SESSIONMANAGER::LOGOUT'
-		);
-		if (logoutProcessor?.length === 1) {
-			logoutProcessor = logoutProcessor?.shift?.();
+	/**
+	 * @memberof Contact
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name #updateContact
+	 *
+	 * @returns {null} - Nothing
+	 *
+	 * @description
+	 * Updates an existing contact for a server-user in the system
+	 * A server-user has to be logged in
+	 *
+	 */
+	async #updateContact(ctxt) {
+		if (!ctxt?.isAuthenticated?.()) {
+			throw new Error(`No active session`);
 		}
 
-		const logoutStatus = await logoutProcessor?.(ctxt);
+		const apiRegistry = this?.domainInterface?.apiRegistry;
+		const contactUpdateStatus = await apiRegistry?.execute?.(
+			'UPDATE_CONTACT',
+			{
+				user: ctxt?.state?.user,
+				data: ctxt.request.body
+			}
+		);
 
-		ctxt.status = logoutStatus?.status;
-		ctxt.body = logoutStatus?.body;
+		ctxt.status = contactUpdateStatus?.status;
+		ctxt.body = contactUpdateStatus?.body;
+	}
+
+	/**
+	 * @memberof Contact
+	 * @async
+	 * @instance
+	 * @override
+	 * @function
+	 * @name #deleteContact
+	 *
+	 * @returns {null} - Nothing
+	 *
+	 * @description
+	 * Deletes the contact of a server-user in the system
+	 * A server-user has to be logged in
+	 *
+	 */
+	async #deleteContact(ctxt) {
+		if (!ctxt?.isAuthenticated?.()) {
+			throw new Error(`No active session`);
+		}
+
+		const apiRegistry = this?.domainInterface?.apiRegistry;
+		const contactDeleteStatus = await apiRegistry?.execute?.(
+			'DELETE_CONTACT',
+			{
+				user: ctxt?.state?.user,
+				contactId: ctxt?.params?.contactId
+			}
+		);
+
+		ctxt.status = contactDeleteStatus?.status;
 	}
 	// #endregion
 }
@@ -146,7 +228,7 @@ export class Main extends BaseSurface {
  * @class SurfaceFactory
  * @extends EVASBaseFactory
  *
- * @classdesc The Session Manager Module Main Surface Class Factory.
+ * @classdesc The ServerUser Domain Profile Context Contact Surface Class Factory.
  */
 export default class SurfaceFactory extends EVASBaseFactory {
 	// #region Constructor
@@ -167,21 +249,21 @@ export default class SurfaceFactory extends EVASBaseFactory {
 	 *
 	 * @param {object} [domainInterface] - Domain functionality exposed to sub-artifacts
 	 *
-	 * @returns {Main} - The Main surface instance.
+	 * @returns {Contact} - The Contact surface instance.
 	 *
 	 */
 	static async createInstances(domainInterface) {
-		if (!SurfaceFactory.#mainInstance) {
-			const mainInstance = new Main(
+		if (!SurfaceFactory.#contactInstance) {
+			const contactInstance = new Contact(
 				SurfaceFactory['$disk_unc'],
 				domainInterface
 			);
 
-			await mainInstance?.load?.();
-			SurfaceFactory.#mainInstance = mainInstance;
+			await contactInstance?.load?.();
+			SurfaceFactory.#contactInstance = contactInstance;
 		}
 
-		return SurfaceFactory.#mainInstance;
+		return SurfaceFactory.#contactInstance;
 	}
 
 	/**
@@ -194,11 +276,11 @@ export default class SurfaceFactory extends EVASBaseFactory {
 	 *
 	 * @returns {undefined} - Nothing.
 	 *
-	 * @description Clears the Main instance
+	 * @description Clears the Contact instance
 	 */
 	static async destroyInstances() {
-		await SurfaceFactory.#mainInstance?.unload?.();
-		SurfaceFactory.#mainInstance = undefined;
+		await SurfaceFactory.#contactInstance?.unload?.();
+		SurfaceFactory.#contactInstance = undefined;
 
 		return;
 	}
@@ -216,15 +298,15 @@ export default class SurfaceFactory extends EVASBaseFactory {
 	 * @returns {string} - Name of this surface.
 	 *
 	 * @description
-	 * Returns the name of this surface - Main
+	 * Returns the name of this surface - Contact
 	 */
 	static get SurfaceName() {
-		return 'Main';
+		return 'Contact';
 	}
 	// #endregion
 
 	// #region Private Static Members
-	static #mainInstance = undefined;
+	static #contactInstance = undefined;
 	// #endregion
 }
 </code></pre>
@@ -235,7 +317,6 @@ export default class SurfaceFactory extends EVASBaseFactory {
 			<h2><a href="index.html">Home</a></h2>
 			<h3>Classes</h3>
 			<ul>
-				<li><a href="AdminDomain.html">AdminDomain</a></li>
 				<li><a href="ApplicationServer.html">ApplicationServer</a></li>
 				<li><a href="ApplicationServerFactory.html">ApplicationServerFactory</a></li>
 				<li><a href="Audit.html">Audit</a></li>
@@ -245,10 +326,15 @@ export default class SurfaceFactory extends EVASBaseFactory {
 				<li><a href="Cache.html">Cache</a></li>
 				<li><a href="Configuration.html">Configuration</a></li>
 				<li><a href="Contact.html">Contact</a></li>
+				<li><a href="Contacts.html">Contacts</a></li>
 				<li><a href="DomainFactory.html">DomainFactory</a></li>
+				<li><a href="EventHandlerFactory.html">EventHandlerFactory</a></li>
 				<li><a href="IngressSurfaceFactory.html">IngressSurfaceFactory</a></li>
+				<li><a href="Locale.html">Locale</a></li>
+				<li><a href="Locales.html">Locales</a></li>
 				<li><a href="Logger.html">Logger</a></li>
 				<li><a href="Main.html">Main</a></li>
+				<li><a href="Masterdata.html">Masterdata</a></li>
 				<li><a href="MiddlewareFactory.html">MiddlewareFactory</a></li>
 				<li><a href="ModelFactory.html">ModelFactory</a></li>
 				<li><a href="MongoDB.html">MongoDB</a></li>
@@ -257,13 +343,12 @@ export default class SurfaceFactory extends EVASBaseFactory {
 				<li><a href="Renderer.html">Renderer</a></li>
 				<li><a href="RepositoryFactory.html">RepositoryFactory</a></li>
 				<li><a href="RestApi.html">RestApi</a></li>
-				<li><a href="Roles.html">Roles</a></li>
 				<li><a href="SQLDatabase.html">SQLDatabase</a></li>
+				<li><a href="ServerUserBaseMiddleware.html">ServerUserBaseMiddleware</a></li>
+				<li><a href="ServerUsers.html">ServerUsers</a></li>
 				<li><a href="Session.html">Session</a></li>
 				<li><a href="SessionManager.html">SessionManager</a></li>
 				<li><a href="SurfaceFactory.html">SurfaceFactory</a></li>
-				<li><a href="Tenant.html">Tenant</a></li>
-				<li><a href="UserDomain.html">UserDomain</a></li>
 			</ul>
 			<h3>Global</h3>
 			<ul>

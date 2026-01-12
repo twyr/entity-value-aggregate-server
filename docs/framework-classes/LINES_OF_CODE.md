@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (1095.0 files/s, 126790.4 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (1105.9 files/s, 126873.6 lines/s)
 --- | ---
 
 File|blank|comment|code
@@ -17,25 +17,26 @@ File|blank|comment|code
 ./lib/base_classes/evas-base-bounded-context.js|9|69|28
 ./lib/base_classes/evas-base-domain.js|9|70|28
 ./lib/base_classes/evas-base-artifact.js|7|66|23
+./lib/base_classes/evas-base-event-handler.js|5|65|18
 ./lib/base_classes/evas-base-middleware.js|5|65|18
 ./lib/base_classes/evas-base-surface.js|5|65|18
 ./README.md|2|0|17
 ./tests/index.spec.cjs|3|1|16
-./index.js|5|24|12
+./index.js|5|24|13
 ./lib/factories/evas-base-factory.js|3|40|12
 ./.prettierrc.json|2|0|8
 ./lib/evas-base-class.js|2|24|7
 ./.lintstagedrc.json|0|0|5
 ./tests/setup-mocks.cjs|0|0|5
 --------|--------|--------|--------
-SUM:|234|1333|1212
-cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (1095.0 files/s, 126790.4 lines/s)
+SUM:|239|1398|1231
+cloc|github.com/AlDanial/cloc v 1.96  T=0.02 s (1105.9 files/s, 126873.6 lines/s)
 --- | ---
 
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
-JavaScript|18|228|1333|980
+JavaScript|19|233|1398|999
 JSON|5|4|0|215
 Markdown|1|2|0|17
 --------|--------|--------|--------|--------
-SUM:|24|234|1333|1212
+SUM:|25|239|1398|1231

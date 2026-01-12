@@ -95,7 +95,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line235">line 235</a>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line312">line 312</a>
 								</li>
 							</ul>
 						</dd>
@@ -137,7 +137,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line194">line 194</a>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line258">line 258</a>
 								</li>
 							</ul>
 						</dd>
@@ -152,6 +152,122 @@
 						</dt>
 						<dd>
 							<span class="param-type">Array</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="_resolve"><span class="type-signature">(async) </span>_resolve<span class="signature">(pattern)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+					<p class="summary">
+					<p>Resolves the pattern asked for, and returns all the API
+						handlers that can respond to it - across the entire server
+						codebase</p>
+					<p>TREAT THIS AN INTERNAL METHOD ONLY.</p>
+					</p>
+					<div class="description">
+						<p>Resolves the pattern asked for, and returns all the API
+							handlers that can respond to it - across the entire server
+							codebase</p>
+						<p>TREAT THIS AN INTERNAL METHOD ONLY. CALL IT DIRECTLY AT YOUR OWN RISK.</p>
+					</div>
+					<h5>Parameters:</h5>
+					<table class="params">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th class="last">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="name"><code>pattern</code></td>
+								<td class="type">
+									<span class="param-type">string</span>
+								</td>
+								<td class="description last">
+									<p>The pattern to be executed.</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line226">line 226</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<p>The results of the execution.</p>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">Array</span>
+						</dd>
+					</dl>
+					<h4 class="name" id="execute"><span class="type-signature">(async) </span>execute<span class="signature">(pattern, data)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+					<p class="summary">
+					<p>Executes all the API that respond to the pattern, and returns
+						the results</p>.</p>
+					<div class="description">
+						<p>Executes all the API that respond to the pattern, and returns
+							the results</p>
+					</div>
+					<h5>Parameters:</h5>
+					<table class="params">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th class="last">Description</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="name"><code>pattern</code></td>
+								<td class="type">
+									<span class="param-type">string</span>
+								</td>
+								<td class="description last">
+									<p>The pattern to be resolved.</p>
+								</td>
+							</tr>
+							<tr>
+								<td class="name"><code>data</code></td>
+								<td class="type">
+									<span class="param-type">Object</span>
+								</td>
+								<td class="description last">
+									<p>The parameters to be passed to the API.</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<dl class="details">
+						<dt class="tag-source">Source:</dt>
+						<dd class="tag-source">
+							<ul class="dummy">
+								<li>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line98">line 98</a>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+					<h5>Returns:</h5>
+					<div class="param-desc">
+						<p>The return value(s) of the API that match the pattern</p>
+					</div>
+					<dl>
+						<dt>
+							Type
+						</dt>
+						<dd>
+							<span class="param-type">Object</span>
 						</dd>
 					</dl>
 					<h4 class="name" id="register"><span class="type-signature">(async) </span>register<span class="signature">(pattern, api)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
@@ -269,59 +385,6 @@
 							<span class="param-type">null</span>
 						</dd>
 					</dl>
-					<h4 class="name" id="resolve"><span class="type-signature">(async) </span>resolve<span class="signature">(pattern)</span><span class="type-signature"> &rarr; {Array}</span></h4>
-					<p class="summary">
-					<p>Resolves the pattern asked for, and returns all the API
-						handlers that can respond to it - across the entire server
-						codebase</p>.</p>
-					<div class="description">
-						<p>Resolves the pattern asked for, and returns all the API
-							handlers that can respond to it - across the entire server
-							codebase</p>
-					</div>
-					<h5>Parameters:</h5>
-					<table class="params">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Type</th>
-								<th class="last">Description</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="name"><code>pattern</code></td>
-								<td class="type">
-									<span class="param-type">string</span>
-								</td>
-								<td class="description last">
-									<p>The pattern to be executed.</p>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<dl class="details">
-						<dt class="tag-source">Source:</dt>
-						<dd class="tag-source">
-							<ul class="dummy">
-								<li>
-									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line96">line 96</a>
-								</li>
-							</ul>
-						</dd>
-					</dl>
-					<h5>Returns:</h5>
-					<div class="param-desc">
-						<p>The results of the execution.</p>
-					</div>
-					<dl>
-						<dt>
-							Type
-						</dt>
-						<dd>
-							<span class="param-type">Array</span>
-						</dd>
-					</dl>
 					<h4 class="name" id="unregister"><span class="type-signature">(async) </span>unregister<span class="signature">(pattern, api)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
 					<p class="summary">De-registers the api function as a handler for the pattern.</p>
 					<div class="description">
@@ -362,7 +425,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line125">line 125</a>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line157">line 157</a>
 								</li>
 							</ul>
 						</dd>
@@ -390,7 +453,7 @@
 						<dd class="tag-source">
 							<ul class="dummy">
 								<li>
-									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line167">line 167</a>
+									<a href="lib_api-registry.js.html">lib/api-registry.js</a>, <a href="lib_api-registry.js.html#line199">line 199</a>
 								</li>
 							</ul>
 						</dd>
