@@ -17,6 +17,34 @@
 			"env": {
 				"NODE_ENV": "development"
 			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Migrate Database",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/node_modules/.bin/knex",
+			"cwd": "${workspaceFolder}/servers/rest-api-server/knex_migrations",
+			"args": ["--knexfile", "./knexfile.cjs", "migrate:latest"],
+			"env": {
+				"NODE_ENV": "development"
+			}
+		}
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Seed Database",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/node_modules/.bin/knex",
+			"cwd": "${workspaceFolder}/servers/rest-api-server/knex_migrations",
+			"args": ["--knexfile", "./knexfile.cjs", "seed:run"],
+			"env": {
+				"NODE_ENV": "development"
+			}
 		}
 	]
 }

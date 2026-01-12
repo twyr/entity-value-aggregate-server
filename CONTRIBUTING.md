@@ -13,9 +13,10 @@
 - [Setting up third-party servers](#setting-up-third-party-servers)
     - [Installing Node.js](#installing-nodejs)
     - [Installing MongoDB](#installing-mongodb)
-    - [Installing PostgreSQL](#installing-postgresql)
+    - [Installing PostgreSQL and Extensions](#installing-postgresql-and-extensions)
     - [Installing Redis](#installing-redis)
 - [Configuring third-party servers](#configuring-third-party-servers)
+-   - [Configuring MongoDB](#configuring-mongodb)
     - [Configuring PostgreSQL](#configuring-postgresql)
     - [Configuring Redis](#configuring-redis)
 - [Getting ready to run](#getting-ready-to-run)
@@ -96,7 +97,7 @@ git config trailer.sign.ifexists doNothing
 git config trailer.sign.command 'echo "$(git config user.name) <$(git config user.email)>"'
 
 git config user.name "YOUR NAME"
-git config user.email "your.name@auramwellness.com"
+git config user.email "your.name@twyr.github.io"
 git config user.signingKey "GPG Key Id"
 ```
 
@@ -145,7 +146,7 @@ based systems can be found here: [Installing MongoDB on Debian / Ubuntu](https:/
 For non Debian / Ubuntu systems, the official instructions can be accessed here:
 [Installing MongoDB on non Debian Systems](https://www.mongodb.com/docs/manual/administration/install-community/)
 
-##### Installing PostgreSQL
+##### Installing PostgreSQL and Extensions
 
 Instructions for installing the latest version of PostgreSQL on Debian / Ubuntu
 based systems can be found here: [Installing PostgreSQL on Debian / Ubuntu](https://www.postgresql.org/download/linux/ubuntu/)
@@ -174,8 +175,20 @@ Once the third-party servers are setup and running, they need to be configured
 before the [Entity Value Aggregate Server](https://github.com/troposphere-solns/osha-framework)
 can run. Specifically:
 
+1. Tweak MongoDB authentication mechanism
 1. Tweak PostgreSQL authentication mechanisms
 1. Tweak memory setting for Redis
+
+##### Configuring MongoDB
+
+Login into MongoDB using the shell:
+
+```bash
+$ mongosh
+test > use twyr
+twyr > db.createUser({ user: "twyr", pwd:  "twyr", roles: [{ role: "dbAdmin", db: "twyr" }, { role: "readWrite", db: "twyr" }]})
+{ ok: 1 }
+```
 
 ##### Configuring PostgreSQL
 
@@ -286,6 +299,9 @@ REVOKE
 
 postgres=# GRANT ALL ON DATABASE twyr TO twyr;
 GRANT
+
+postgres=# \c twyr;
+You are now connected to database "twyr" as user "postgres".
 ```
 
 Next, run the following commands from the `Terminal` to setup the database:

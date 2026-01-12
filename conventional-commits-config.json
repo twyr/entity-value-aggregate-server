@@ -1,0 +1,25 @@
+{
+	"options": {
+		"preset": {
+			"name": "conventionalcommits"
+		},
+		"types": [
+			{ "type": "functionality", "section": "Features" },
+			{ "type": "fix", "section": "Bug Fixes" },
+			{ "type": "perf", "section": "Performance Improvements" },
+			{ "type": "refactor", "section": "Refactors" }
+		],
+		"scope": [
+			"surface",
+			"domain",
+			"context",
+			"module",
+			"service",
+			"package",
+			"server",
+			"repository"
+		],
+
+		"scopeOnly": true
+	}
+}
