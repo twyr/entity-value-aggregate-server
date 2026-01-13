@@ -177,7 +177,7 @@ export class Contacts extends ServerUserBaseMiddleware {
 			user: user,
 			payload: data,
 
-			relationships: 'serverUser',
+			relationships: '[serverUser, contactType]',
 			serializeType: 'server_user_contact',
 
 			eventName: 'SERVER_USER_CONTACT_CREATED'
@@ -196,7 +196,7 @@ export class Contacts extends ServerUserBaseMiddleware {
 			user: user,
 			entityId: contactId,
 
-			relationships: 'serverUser',
+			relationships: '[serverUser, contactType]',
 			serializeType: 'server_user_contact'
 		};
 
@@ -214,7 +214,7 @@ export class Contacts extends ServerUserBaseMiddleware {
 			user: user,
 			payload: data,
 
-			relationships: 'serverUser',
+			relationships: '[serverUser, contactType]',
 			eventName: 'SERVER_USER_CONTACT_UPDATED'
 		};
 

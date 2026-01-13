@@ -103,7 +103,7 @@ class RestApi extends EVASBaseIngressSurface {
 		sessionConfig.genid = function () {
 			return `${
 				configuration?.['SESSION_KEY'] ?? DEFAULT_SESSION_KEY
-			}!${uuidv4()}`;
+			}.${uuidv4()?.replaceAll('-', '')}`;
 		};
 
 		/**

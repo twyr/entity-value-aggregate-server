@@ -147,9 +147,13 @@ export class Session extends ServerUserBaseMiddleware {
 	// #endregion
 
 	// #region Handlers
-	async #generateOtp({ username }) {
+	async #generateOtp({ username, userLocale }) {
+		// In non-production environments, use a fixed OTP for ease of testing
+		let secureOtp = 909090;
+
 		// Step 1: Generate a crypto-secure random 6-digit OTP
-		let secureOtp = randomInt(100_000, 1_000_000);
+		if (global.serverEnvironment === 'production')
+			secureOtp = randomInt(100_000, 1_000_000);
 
 		// Step 2: Store the OTP with an expiry against the username
 		const cacheRepository =
@@ -160,24 +164,39 @@ export class Session extends ServerUserBaseMiddleware {
 		cacheMulti?.expire?.(`server-user-otp-${username}`, 600);
 		await cacheMulti?.exec?.();
 
-		// Step 3: Compute OTP expiry time
+		// Step 3: Compute OTP expiry time and setup the response message
 		let expiryTime = DateTime?.now?.()?.plus?.({ minutes: 10 });
 		expiryTime = expiryTime
 			// TODO: Get the locale based on user preferences
-			?.setLocale('en-IN')
-			?.toLocaleString?.(DateTime?.TIME_SIMPLE);
+			?.setLocale(userLocale ?? 'en-IN')
+			?.toLocaleString?.(DateTime?.TIME_WITH_SHORT_OFFSET)
+			?.toLocaleUpperCase?.();
 
-		let responseMsg = undefined;
+		let responseMsg = {
+			type: 'sms',
+			username: username,
+			otp: secureOtp,
+			expiryTime: expiryTime,
+			message: `Your OTP for Twyr is ${secureOtp}. Valid till ${expiryTime}.`
+		};
+
 		if (global.serverEnvironment === 'production') {
-			responseMsg = `OTP for ${username} sent. Please check your device. Valid till ${expiryTime}.`;
-		} else {
-			responseMsg = `OTP for ${username}: ${secureOtp}. Valid till ${expiryTime}.`;
+			// Send notification to user with the OTP
+			const notificationRepository =
+				await this?.domainInterface?.iocContainer?.resolve?.(
+					'Notification'
+				);
+
+			await notificationRepository?.send?.(responseMsg);
 		}
 
-		// Step 3: Send the OTP back
+		// Step 4: Send the OTP back
 		return {
 			status: 200,
-			body: responseMsg
+			body:
+				global.serverEnvironment !== 'production'
+					? responseMsg
+					: 'OTP Sent Successfully'
 		};
 	}
 

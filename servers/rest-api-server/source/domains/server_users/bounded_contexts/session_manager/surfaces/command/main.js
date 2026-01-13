@@ -72,6 +72,12 @@ export class Main extends BaseSurface {
 
 		baseRoutes?.push?.({
 			httpMethod: 'POST',
+			path: '/generate-otp/:localeId',
+			handler: this.#generateOtp?.bind?.(this)
+		});
+
+		baseRoutes?.push?.({
+			httpMethod: 'POST',
 			path: '/login',
 			middlewares: [authRepository?.authenticate?.('server-user-local')],
 			handler: this.#login?.bind?.(this)
@@ -136,7 +142,8 @@ export class Main extends BaseSurface {
 	async #generateOtp(ctxt) {
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const otpStatus = await apiRegistry?.execute?.('GENERATE_OTP', {
-			username: ctxt?.request?.body?.username
+			username: ctxt?.request?.body?.username,
+			userLocale: ctxt?.params?.localeId ?? 'en-IN'
 		});
 
 		ctxt.status = otpStatus?.status;

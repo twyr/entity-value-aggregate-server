@@ -178,7 +178,7 @@ export class Locales extends ServerUserBaseMiddleware {
 			user: user,
 			payload: data,
 
-			relationships: 'serverUser',
+			relationships: '[serverUser, locale]',
 			serializeType: 'server_user_locale',
 
 			eventName: 'SERVER_USER_LOCALE_CREATED'
@@ -216,7 +216,7 @@ export class Locales extends ServerUserBaseMiddleware {
 			user: user,
 			payload: data,
 
-			relationships: 'serverUser',
+			relationships: '[serverUser, locale]',
 			serializeType: 'server_user_locale',
 
 			eventName: 'SERVER_USER_LOCALE_UPDATED'

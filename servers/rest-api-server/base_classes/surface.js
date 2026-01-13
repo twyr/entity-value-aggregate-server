@@ -213,7 +213,6 @@ export class BaseSurface extends EVASBaseSurface {
 		// Step 2: Create the Koa middleware...
 		const permissionCheckerMiddleware =
 			async function permissionCheckerMiddleware(ctxt, next) {
-				// Step 3.1: The trivial Cases...
 				if (!ctxt.state.user) {
 					throw new Error(`No active session`);
 				}
