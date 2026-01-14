@@ -72,12 +72,6 @@ export class Main extends BaseSurface {
 
 		baseRoutes?.push?.({
 			httpMethod: 'POST',
-			path: '/generate-otp/:localeId',
-			handler: this.#generateOtp?.bind?.(this)
-		});
-
-		baseRoutes?.push?.({
-			httpMethod: 'POST',
 			path: '/login',
 			middlewares: [authRepository?.authenticate?.('server-user-local')],
 			handler: this.#login?.bind?.(this)
@@ -131,11 +125,11 @@ export class Main extends BaseSurface {
 	 *
 	 * @example
 	 * // Execute CURL command from the terminal
-	 * // Send in the mobile number as "username"
+	 * // Send in the mobile number as "username", and preferred locale as "locale"
 	 * // The OTP will be sent to the actual number offline
-	 * $ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890"}' -c ./cookies.txt ${base_url}/api/v1/server_users/session-manager/generate-otp
+	 * $ curl -X POST -H "Content-Type: application/json" -d '{"username":"+911234567890", "locale":"en-IN"}' ${base_url}/api/v1/server-users/session-manager/generate-otp
 	 *
-	 * Generated OTP for +911234567890. It will remain valid for 10 minutes.
+	 * An OTP has been sent to your registered mobile number.
 	 * $
 	 *
 	 */
@@ -143,7 +137,7 @@ export class Main extends BaseSurface {
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const otpStatus = await apiRegistry?.execute?.('GENERATE_OTP', {
 			username: ctxt?.request?.body?.username,
-			userLocale: ctxt?.params?.localeId ?? 'en-IN'
+			userLocale: ctxt?.request?.body?.locale ?? 'en-IN'
 		});
 
 		ctxt.status = otpStatus?.status;
