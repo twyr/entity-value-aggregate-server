@@ -1925,29 +1925,6 @@
               "name": "not-to-dev-dep"
             }
           ]
-        },
-        {
-          "module": "cldr-misc-full/main/en/layout.json",
-          "moduleSystem": "cjs",
-          "dynamic": false,
-          "exoticallyRequired": false,
-          "dependencyTypes": [
-            "npm-dev",
-            "require"
-          ],
-          "resolved": "../../node_modules/cldr-misc-full/main/en/layout.json",
-          "coreModule": false,
-          "followable": false,
-          "couldNotResolve": false,
-          "matchesDoNotFollow": true,
-          "circular": false,
-          "valid": false,
-          "rules": [
-            {
-              "severity": "error",
-              "name": "not-to-dev-dep"
-            }
-          ]
         }
       ],
       "dependents": [],
@@ -1990,23 +1967,6 @@
     },
     {
       "source": "../../node_modules/cldr-localenames-full/main/en/territories.json",
-      "followable": false,
-      "coreModule": false,
-      "couldNotResolve": false,
-      "matchesDoNotFollow": true,
-      "dependencyTypes": [
-        "npm-dev",
-        "require"
-      ],
-      "dependencies": [],
-      "dependents": [
-        "knex_migrations/seeds/002-locales-seed.cjs"
-      ],
-      "orphan": false,
-      "valid": true
-    },
-    {
-      "source": "../../node_modules/cldr-misc-full/main/en/layout.json",
       "followable": false,
       "coreModule": false,
       "couldNotResolve": false,
@@ -5324,15 +5284,6 @@
         }
       },
       {
-        "type": "dependency",
-        "from": "knex_migrations/seeds/002-locales-seed.cjs",
-        "to": "../../node_modules/cldr-misc-full/main/en/layout.json",
-        "rule": {
-          "severity": "error",
-          "name": "not-to-dev-dep"
-        }
-      },
-      {
         "type": "cycle",
         "from": "source/domains/server_users/models/relational/contact-type-master.cjs",
         "to": "source/domains/server_users/models/relational/server-user-contact.cjs",
@@ -5764,12 +5715,12 @@
         }
       }
     ],
-    "error": 4,
+    "error": 3,
     "warn": 39,
     "info": 0,
     "ignore": 0,
-    "totalCruised": 129,
-    "totalDependenciesCruised": 190,
+    "totalCruised": 128,
+    "totalDependenciesCruised": 189,
     "optionsUsed": {
       "baseDir": "/home/vish/Work/twyr/entity-value-aggregate-server/servers/rest-api-server",
       "combinedDependencies": false,

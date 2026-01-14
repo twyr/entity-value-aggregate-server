@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.96  T=0.05 s (1283.4 files/s, 259295.4 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1164.0 files/s, 235286.8 lines/s)
 --- | ---
 
 File|blank|comment|code
@@ -7,7 +7,7 @@ File|blank|comment|code
 ./source/ingress_surfaces/rest_api/index.js|108|188|423
 ./source/domains/server_users/bounded_contexts/profile/middlewares/basics.js|61|116|303
 ./knex_migrations/migrations/20221213123852-server-user-schema.cjs|29|5|254
-./knex_migrations/migrations/20221213119018-master-table-schema.cjs|22|5|234
+./knex_migrations/migrations/20221213119018-master-table-schema.cjs|22|5|237
 ./source/domains/server_users/bounded_contexts/profile/middlewares/locales.js|43|101|193
 ./source/domains/server_users/bounded_contexts/profile/middlewares/contacts.js|40|101|192
 ./source/domains/server_users/bounded_contexts/session_manager/middlewares/session.js|44|117|190
@@ -19,15 +19,15 @@ File|blank|comment|code
 ./source/bounded_contexts/masterdata/surfaces/query/main.js|27|208|128
 ./source/repositories/runtime/logger/index.js|31|117|124
 ./source/domains/server_users/base_classes/middleware.js|30|149|119
+./knex_migrations/seeds/002-locales-seed.cjs|18|20|117
 ./source/repositories/runtime/cache/index.js|40|146|116
 ./base_classes/surface.js|32|132|115
-./knex_migrations/seeds/002-locales-seed.cjs|15|20|111
 ./eslint.config.js|11|42|108
 ./source/domains/server_users/bounded_contexts/session_manager/event_handlers/session.js|27|101|107
-./source/domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js|27|188|106
 ./source/repositories/runtime/mongodb/index.js|32|118|105
 ./source/domains/server_users/bounded_contexts/profile/surfaces/command/contact.js|25|164|102
 ./source/domains/server_users/bounded_contexts/profile/surfaces/command/locale.js|25|164|102
+./source/domains/server_users/bounded_contexts/session_manager/surfaces/command/main.js|26|188|101
 ./source/index.js|34|49|101
 ./source/repositories/runtime/audit/index.js|33|136|99
 ./source/domains/server_users/index.js|18|119|98
@@ -74,15 +74,15 @@ File|blank|comment|code
 ./source/domains/server_users/templates/email/new-server-user.ejs|2|0|4
 ./source/domains/server_users/templates/email/update-server-user.ejs|2|0|4
 --------|--------|--------|--------
-SUM:|1331|5160|7652
-cloc|github.com/AlDanial/cloc v 1.96  T=0.05 s (1283.4 files/s, 259295.4 lines/s)
+SUM:|1333|5160|7656
+cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1164.0 files/s, 235286.8 lines/s)
 --- | ---
 
 Language|files|blank|comment|code
 :-------|-------:|-------:|-------:|-------:
-JavaScript|62|1321|5160|7365
+JavaScript|62|1323|5160|7369
 JSON|5|4|0|263
 Markdown|1|2|0|16
 EJS|2|4|0|8
 --------|--------|--------|--------|--------
-SUM:|70|1331|5160|7652
+SUM:|70|1333|5160|7656
