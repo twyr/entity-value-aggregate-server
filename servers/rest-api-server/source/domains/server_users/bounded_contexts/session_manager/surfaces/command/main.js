@@ -60,8 +60,6 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async _registerSurface() {
-		const authRepository =
-			await this?.domainInterface?.iocContainer?.resolve?.('Auth');
 		const baseRoutes = await super._registerSurface?.();
 
 		baseRoutes?.push?.({
@@ -75,7 +73,6 @@ export class Main extends BaseSurface {
 			version: 1,
 			httpMethod: 'POST',
 			path: '/login',
-			middlewares: [authRepository?.authenticate?.('server-user-local')],
 			handler: this.#login?.bind?.(this)
 		});
 
@@ -171,10 +168,32 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #login(ctxt) {
+		const i18nRepository =
+			await this?.domainInterface?.iocContainer?.resolve?.('MessageI18N');
+
+		const userLocale = ctxt?.state?.user?.locales?.filter?.(
+			(locale) => !!locale?.primary
+		)?.[0]?.locale;
+
+		// Sanity check...
 		if (ctxt?.isAuthenticated?.()) {
-			throw new Error(`Active session already exists`);
+			const errorMessage = await i18nRepository?.translate(
+				'SERVER_USERS::SESSION_MANAGER::EXISTING_ACTIVE_SESSION',
+				userLocale
+			);
+
+			throw new Error(errorMessage);
 		}
 
+		// Step 1: Login...
+		const authRepository =
+			await this?.domainInterface?.iocContainer?.resolve?.('Auth');
+		const authenticator =
+			authRepository?.authenticate?.('server-user-local');
+
+		await authenticator?.(ctxt, async () => {});
+
+		// Step 2: Post Login Processing...
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const postLoginStatus = await apiRegistry?.execute?.('LOGIN', {
 			user: ctxt?.state?.user,
@@ -208,10 +227,6 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #logout(ctxt) {
-		if (!ctxt.isAuthenticated()) {
-			throw new Error(`No active session`);
-		}
-
 		const userId = ctxt?.state?.user?.id;
 		const userRole = ctxt?.session?.passport?.user?.['role'];
 		const userName = `${ctxt?.state?.user?.['first_name']} ${ctxt?.state?.user?.['last_name']}`;

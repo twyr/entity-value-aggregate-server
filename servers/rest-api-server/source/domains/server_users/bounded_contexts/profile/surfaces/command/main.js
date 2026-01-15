@@ -147,10 +147,6 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #updateProfile(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const profileUpdateStatus = await apiRegistry?.execute?.('UPDATE', {
 			user: ctxt?.state?.user,
@@ -177,10 +173,6 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #deleteProfile(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const userId = ctxt?.state?.user?.id;
 
@@ -189,8 +181,7 @@ export class Main extends BaseSurface {
 		});
 
 		await ctxt?.logout?.();
-
-		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER::LOGOUT', {
 			userId
 		});
 

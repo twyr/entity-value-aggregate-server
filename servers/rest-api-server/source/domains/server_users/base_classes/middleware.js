@@ -122,7 +122,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 	 *
 	 */
 	async _createServerUserEntity(data) {
-		let EntityModel = await this?._getModelsFromDomain?.(data?.model);
+		const EntityModel = await this?._getModelsFromDomain?.(data?.model);
 
 		// Step 1: De-serialize from JSON API Format
 		const serverUserEntity =
@@ -138,7 +138,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 		serverUserEntity.server_user_id = data?.user?.id;
 
 		// Step 3: Do the dew!
-		let createdEntity = await this?._executeWithBackOff?.(() => {
+		let createdEntity = await this?._executeWithBackOff?.(async () => {
 			return EntityModel?.query?.()
 				?.insertAndFetch?.(serverUserEntity)
 				?.withGraphFetched?.(data?.relationships);
@@ -156,7 +156,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 			entityId: createdEntity?.id
 		});
 
-		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER::LOGOUT', {
 			userId: data?.serverUserId
 		});
 
@@ -181,17 +181,17 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 	 *
 	 */
 	async _readServerUserEntity(data) {
-		let EntityModel = await this?._getModelsFromDomain?.(data?.model);
+		const EntityModel = await this?._getModelsFromDomain?.(data?.model);
 
 		let serverUserEntities = undefined;
 		if (!data?.entityId) {
-			serverUserEntities = await this?._executeWithBackOff?.(() => {
+			serverUserEntities = await this?._executeWithBackOff?.(async () => {
 				return EntityModel?.query?.()
 					?.where?.('server_user_id', '=', data?.user?.id)
 					?.withGraphFetched?.(data?.relationships);
 			});
 		} else {
-			serverUserEntities = await this?._executeWithBackOff?.(() => {
+			serverUserEntities = await this?._executeWithBackOff?.(async () => {
 				return EntityModel?.query?.()
 					?.where?.('id', '=', data?.entityId)
 					?.andWhere?.('server_user_id', '=', data?.user?.id)
@@ -226,7 +226,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 	 *
 	 */
 	async _updateServerUserEntity(data) {
-		let EntityModel = await this?._getModelsFromDomain?.(data?.model);
+		const EntityModel = await this?._getModelsFromDomain?.(data?.model);
 
 		// Step 1: De-serialize from JSON API Format
 		const serverUserEntity =
@@ -241,7 +241,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 		serverUserEntity.server_user_id = data?.user?.id;
 
 		// Step 2: Do the dew!
-		let updatedEntity = await this?._executeWithBackOff?.(() => {
+		let updatedEntity = await this?._executeWithBackOff?.(async () => {
 			return EntityModel?.query?.()
 				?.patchAndFetchById?.(serverUserEntity?.id, serverUserEntity)
 				?.withGraphFetched?.(data?.relationships);
@@ -259,7 +259,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 			entityId: updatedEntity?.id
 		});
 
-		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER::LOGOUT', {
 			userId: data?.serverUserId
 		});
 
@@ -284,9 +284,9 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 	 *
 	 */
 	async _deleteServerUserEntity(data) {
-		let EntityModel = await this?._getModelsFromDomain?.(data?.model);
+		const EntityModel = await this?._getModelsFromDomain?.(data?.model);
 
-		await this?._executeWithBackOff?.(() => {
+		await this?._executeWithBackOff?.(async () => {
 			return EntityModel?.query?.()
 				?.deleteById?.(data?.entityId)
 				?.andWhere?.('server_user_id', '=', data?.user?.id);
@@ -298,7 +298,7 @@ export class ServerUserBaseMiddleware extends BaseMiddleware {
 			entityId: data?.entityId
 		});
 
-		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER::LOGOUT', {
 			userId: data?.serverUserId
 		});
 

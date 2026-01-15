@@ -126,10 +126,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #createLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeStatus = await apiRegistry?.execute?.('CREATE_LOCALE', {
 			user: ctxt?.state?.user,
@@ -156,10 +152,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #updateLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeUpdateStatus = await apiRegistry?.execute?.(
 			'UPDATE_LOCALE',
@@ -189,10 +181,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #deleteLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeDeleteStatus = await apiRegistry?.execute?.(
 			'DELETE_LOCALE',

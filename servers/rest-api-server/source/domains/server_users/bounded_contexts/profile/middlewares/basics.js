@@ -168,12 +168,15 @@ export class Basics extends ServerUserBaseMiddleware {
 
 	// #region Handlers
 	async #createBasics({ data }) {
-		let ServerUserModel = await this?._getModelsFromDomain?.([
+		const ServerUserModel = await this?._getModelsFromDomain?.([
 			{
 				type: 'relational',
 				name: 'server-user'
 			}
 		]);
+
+		const i18nRepository =
+			await this?.domainInterface?.iocContainer?.resolve?.('MessageI18N');
 
 		// Step 1: De-serialize from JSON API Format
 		const serverUser =
@@ -194,23 +197,35 @@ export class Basics extends ServerUserBaseMiddleware {
 		);
 
 		if (serverUser?.otp !== otpNumber) {
-			throw new Error(
-				`Profile cannot be created for ${serverUser.first_name} ${serverUser.last_name}. OTP mismatch.`
+			const errorMessage = await i18nRepository?.translate(
+				'SERVER_USERS::PROFILE::OTP_MISSING',
+				serverUser?.locale,
+				{
+					firstName: serverUser.first_name,
+					lastName: serverUser.last_name
+				}
 			);
+
+			throw new Error(errorMessage);
 		}
 
-		delete serverUser.otp;
-
-		let existingServerUser = await this?._executeWithBackOff?.(() => {
+		let existingServerUser = await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()
 				?.where?.('mobile_no', '=', serverUser?.mobile_no)
 				?.first?.();
 		});
 
 		if (existingServerUser) {
-			throw new Error(
-				`Profile cannot be created for ${serverUser.first_name} ${serverUser.last_name}. User already exists.`
+			const errorMessage = await i18nRepository?.translate(
+				'SERVER_USERS::PROFILE::DUPLICATE_USER',
+				serverUser?.locale,
+				{
+					firstName: serverUser.first_name,
+					lastName: serverUser.last_name
+				}
 			);
+
+			throw new Error(errorMessage);
 		}
 
 		const currentTime = DateTime?.local?.();
@@ -218,27 +233,39 @@ export class Basics extends ServerUserBaseMiddleware {
 
 		const serverUserAge = currentTime?.diff?.(serverUserDob)?.as?.('years');
 		if (serverUserAge < 18) {
-			throw new Error(
-				`${serverUser.first_name} ${serverUser.last_name} is a minor.`
+			const errorMessage = await i18nRepository?.translate(
+				'SERVER_USERS::PROFILE::MINOR_USER',
+				serverUser?.locale,
+				{
+					firstName: serverUser.first_name,
+					lastName: serverUser.last_name
+				}
 			);
+
+			throw new Error(errorMessage);
 		}
 
 		// Step 3: Create the server-user profile basics / contact
-		let createdServerUser = await this?._executeWithBackOff?.(() => {
+		delete serverUser.locale;
+		delete serverUser.otp;
+
+		let createdServerUser = await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()?.insertAndFetch?.(serverUser);
 		});
 
 		const dbRepository =
 			await this.domainInterface?.iocContainer?.resolve?.('SQLDatabase');
 
-		let mobileContactTypeId = await this?._executeWithBackOff?.(() => {
-			return dbRepository?.raw?.(
-				`SELECT id FROM contact_type_master WHERE name = 'mobile'`
-			);
-		});
+		let mobileContactTypeId = await this?._executeWithBackOff?.(
+			async () => {
+				return dbRepository?.raw?.(
+					`SELECT id FROM contact_type_master WHERE name = 'mobile'`
+				);
+			}
+		);
 
 		mobileContactTypeId = mobileContactTypeId?.rows?.shift?.()?.['id'];
-		await this?._executeWithBackOff?.(() => {
+		await this?._executeWithBackOff?.(async () => {
 			return dbRepository?.raw?.(
 				`INSERT INTO server_user_contacts (server_user_id, contact_type_id, contact, is_primary, verified) VALUES (?, ?, ?, ?, ?)`,
 				[
@@ -257,7 +284,7 @@ export class Basics extends ServerUserBaseMiddleware {
 		});
 
 		// Finally, serialize and return
-		createdServerUser = await this?._executeWithBackOff?.(() => {
+		createdServerUser = await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()
 				?.findById?.(createdServerUser?.id)
 				?.withGraphFetched?.(
@@ -278,7 +305,7 @@ export class Basics extends ServerUserBaseMiddleware {
 	}
 
 	async #readBasics({ user, relationships }) {
-		let ServerUserModel = await this?._getModelsFromDomain?.([
+		const ServerUserModel = await this?._getModelsFromDomain?.([
 			{
 				type: 'relational',
 				name: 'server-user'
@@ -299,7 +326,7 @@ export class Basics extends ServerUserBaseMiddleware {
 		);
 
 		// Step 2: Do the dew!
-		let serverUserBasics = await this?._executeWithBackOff?.(() => {
+		let serverUserBasics = await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()
 				?.where?.('id', '=', user?.id)
 				?.withGraphFetched?.(relationshipSet);
@@ -319,7 +346,7 @@ export class Basics extends ServerUserBaseMiddleware {
 	}
 
 	async #updateBasics({ user, data }) {
-		let ServerUserModel = await this?._getModelsFromDomain?.([
+		const ServerUserModel = await this?._getModelsFromDomain?.([
 			{
 				type: 'relational',
 				name: 'server-user'
@@ -338,7 +365,7 @@ export class Basics extends ServerUserBaseMiddleware {
 		delete dataToBeUpdated.updated_at;
 
 		// Step 2: Do the dew!
-		let updatedServerUser = await this?._executeWithBackOff?.(() => {
+		let updatedServerUser = await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()
 				?.patchAndFetchById?.(dataToBeUpdated?.id, dataToBeUpdated)
 				?.withGraphFetched?.(
@@ -366,14 +393,14 @@ export class Basics extends ServerUserBaseMiddleware {
 	}
 
 	async #deleteBasics({ userId }) {
-		let ServerUserModel = await this?._getModelsFromDomain?.([
+		const ServerUserModel = await this?._getModelsFromDomain?.([
 			{
 				type: 'relational',
 				name: 'server-user'
 			}
 		]);
 
-		await this?._executeWithBackOff?.(() => {
+		await this?._executeWithBackOff?.(async () => {
 			return ServerUserModel?.query?.()?.findById?.(userId)?.patch?.({
 				is_active: false
 			});

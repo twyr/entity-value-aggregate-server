@@ -126,10 +126,6 @@ export class Contact extends BaseSurface {
 	 *
 	 */
 	async #createContact(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const contactStatus = await apiRegistry?.execute?.('CREATE_CONTACT', {
 			user: ctxt?.state?.user,
@@ -156,10 +152,6 @@ export class Contact extends BaseSurface {
 	 *
 	 */
 	async #updateContact(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const contactUpdateStatus = await apiRegistry?.execute?.(
 			'UPDATE_CONTACT',
@@ -189,10 +181,6 @@ export class Contact extends BaseSurface {
 	 *
 	 */
 	async #deleteContact(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const contactDeleteStatus = await apiRegistry?.execute?.(
 			'DELETE_CONTACT',

@@ -252,7 +252,7 @@ export class Session extends ServerUserBaseMiddleware {
 	}
 
 	async #logout({ userId, userRole, userName }) {
-		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER_LOGOUT', {
+		this?.domainInterface?.eventEmitter?.emit?.('SERVER_USER::LOGOUT', {
 			userId: userId
 		});
 

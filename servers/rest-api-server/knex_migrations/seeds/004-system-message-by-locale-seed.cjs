@@ -20,6 +20,35 @@ exports.seed = async function (knex) {
 			locale_code: 'en-IN',
 			message_text:
 				'An OTP has been sent to your registered mobile number.'
+		},
+		{
+			message_code:
+				'SERVER_USERS::SESSION_MANAGER::EXISTING_ACTIVE_SESSION',
+			locale_code: 'en-IN',
+			message_text: 'Active session already exists.'
+		},
+		{
+			message_code: 'SERVER_USERS::SESSION_MANAGER::NO_ACTIVE_SESSION',
+			locale_code: 'en-IN',
+			message_text: 'No active session.'
+		},
+		{
+			message_code: 'SERVER_USERS::PROFILE::OTP_MISSING',
+			locale_code: 'en-IN',
+			message_text:
+				'Profile cannot be created for {{first_name}} {{last_name}}. OTP mismatch.'
+		},
+		{
+			message_code: 'SERVER_USERS::PROFILE::DUPLICATE_USER',
+			locale_code: 'en-IN',
+			message_text:
+				'Profile cannot be created for {{first_name}} {{last_name}}. User already exists.'
+		},
+		{
+			message_code: 'SERVER_USERS::PROFILE::MINOR_USER',
+			locale_code: 'en-IN',
+			message_text:
+				'Profile cannot be created for {{first_name}} {{last_name}}. User is a minor.'
 		}
 	]);
 };

@@ -54,7 +54,7 @@ export class Session extends BaseEventHandler {
 
 			registerResolutions?.push?.(
 				eventEmitter?.on?.(
-					'SERVER_USER_LOGOUT',
+					'SERVER_USER::LOGOUT',
 					this.#postLogoutCleanup?.bind?.(this)
 				)
 			);
@@ -102,7 +102,7 @@ export class Session extends BaseEventHandler {
 
 			unregisterResolutions?.push?.(
 				eventEmitter?.off?.(
-					'SERVER_USER_LOGOUT',
+					'SERVER_USER::LOGOUT',
 					this.#postLogoutCleanup?.bind?.(this)
 				)
 			);
