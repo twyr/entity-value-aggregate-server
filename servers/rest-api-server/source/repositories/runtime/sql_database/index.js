@@ -61,6 +61,9 @@ class SQLDatabase extends EVASBaseRepository {
 		await super.load?.();
 
 		// Step 1: Setup the configuration
+		let pgError = await import('pg-error');
+		pgError = pgError?.['default'];
+
 		const defaultConfiguration = {
 			debug: DEFAULT_SQLDB_DEBUG,
 			asyncStackTraces: DEFAULT_SQLDB_ASYNC_STACK_TRACES,
@@ -82,6 +85,19 @@ class SQLDatabase extends EVASBaseRepository {
 				max: DEFAULT_SQLDB_MAX_POOL_SIZE,
 
 				afterCreate: (connection, done) => {
+					connection.connection.parseE = pgError.parse;
+					connection.connection.parseN = pgError.parse;
+					connection.connection.on('PgError', (error) => {
+						switch (error.severity) {
+							case 'ERROR':
+							case 'FATAL':
+							case 'PANIC':
+								return this.emit('error', error);
+							default:
+								return this.emit('notice', error);
+						}
+					});
+
 					connection.on('notice', this.#databaseNotice?.bind?.(this));
 					done(null, connection);
 				}
@@ -186,7 +202,7 @@ class SQLDatabase extends EVASBaseRepository {
 		safeJsonStringify = safeJsonStringify?.['default'];
 
 		const logger = await this?.iocContainer?.resolve?.('Logger');
-		logger?.warn?.(
+		logger?.info?.(
 			`${this?.name}#databaseNotice: ${safeJsonStringify?.(
 				notice,
 				undefined,
