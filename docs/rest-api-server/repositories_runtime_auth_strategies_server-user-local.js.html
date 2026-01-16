@@ -53,7 +53,13 @@ export default async function localStrategy(
 					);
 					serverUserRecord = serverUserRecord?.rows?.[0];
 					if (!serverUserRecord) {
-						throw new Error(`ServerUser record not found`);
+						const userError = new Error(
+							'EVASERVER::AUTH_REPOSITORY::USER_NOT_FOUND_IN_DB'
+						);
+						userError.code =
+							'EVASERVER::AUTH_REPOSITORY::USER_NOT_FOUND_IN_DB';
+
+						throw userError;
 					}
 
 					const otpNumber = await cacheRepository?.get?.(
@@ -61,15 +67,23 @@ export default async function localStrategy(
 					);
 
 					if (!otpNumber) {
-						throw new Error(
-							`OTP has expired. Please request a new OTP.`
+						const userError = new Error(
+							'EVASERVER::AUTH_REPOSITORY::OTP_EXPIRED_OR_INVALID'
 						);
+						userError.code =
+							'EVASERVER::AUTH_REPOSITORY::OTP_EXPIRED_OR_INVALID';
+
+						throw userError;
 					}
 
 					if (otpNumber !== password) {
-						throw new Error(
-							`Invalid OTP number. Please try again.`
+						const userError = new Error(
+							'EVASERVER::AUTH_REPOSITORY::OTP_EXPIRED_OR_INVALID'
 						);
+						userError.code =
+							'EVASERVER::AUTH_REPOSITORY::OTP_EXPIRED_OR_INVALID';
+
+						throw userError;
 					}
 
 					callback?.(undefined, serverUserRecord);

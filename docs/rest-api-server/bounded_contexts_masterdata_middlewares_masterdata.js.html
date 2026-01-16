@@ -238,17 +238,16 @@ export class Masterdata extends BaseMiddleware {
 		const dbRepository =
 			await this.domainInterface?.iocContainer?.resolve?.('SQLDatabase');
 
-		let masterdata = undefined;
-		if (!id) {
-			masterdata = await dbRepository?.raw?.(
-				`SELECT * FROM ${tableName}`
-			);
-		} else {
-			masterdata = await dbRepository?.raw?.(
-				`SELECT * FROM ${tableName} WHERE ${field} = ?`,
-				[id]
-			);
-		}
+		let masterdata = await this?._executeWithBackOff?.(async () => {
+			if (!id) {
+				return dbRepository?.raw?.(`SELECT * FROM ${tableName}`);
+			} else {
+				return dbRepository?.raw?.(
+					`SELECT * FROM ${tableName} WHERE ${field} = ?`,
+					[id]
+				);
+			}
+		});
 
 		masterdata = masterdata?.rows;
 		return masterdata;

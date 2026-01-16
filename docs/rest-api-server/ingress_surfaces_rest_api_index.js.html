@@ -207,13 +207,7 @@ class RestApi extends EVASBaseIngressSurface {
 
 		this.#koaApp.use?.(koaSession);
 
-		// Step 2.8: Passport based authentication...
-		const authRepository = await this?.iocContainer?.resolve?.('Auth');
-
-		this.#koaApp?.use?.(authRepository?.initialize?.());
-		this.#koaApp?.use?.(authRepository?.session?.());
-
-		// Step 2.9: The body parsers...
+		// Step 2.8: The body parsers...
 		const bodyParserConfig = {
 			jsonLimit:
 				configuration?.['MAX_PAYLOAD_SIZE'] ?? DEFAULT_MAX_PAYLOAD_SIZE,
@@ -233,8 +227,14 @@ class RestApi extends EVASBaseIngressSurface {
 
 		this.#koaApp?.use?.(koaBodyParser(bodyParserConfig));
 
-		// Step 2.10: The audit log hook...
+		// Step 2.9: The audit log hook...
 		this.#koaApp?.use?.(this.#auditLog?.bind?.(this));
+
+		// Step 2.10: Passport based authentication...
+		const authRepository = await this?.iocContainer?.resolve?.('Auth');
+
+		this.#koaApp?.use?.(authRepository?.initialize?.());
+		this.#koaApp?.use?.(authRepository?.session?.());
 
 		// Finally, add in the router for each allowed version...
 		let Router = await import('@koa/router');
@@ -432,7 +432,7 @@ class RestApi extends EVASBaseIngressSurface {
 	// #region Getters / Setters
 	get interface() {
 		return {
-			router: this.#routers,
+			routers: this.#routers,
 
 			start: this?.start?.bind?.(this),
 			stop: this?.stop?.bind?.(this)
@@ -445,9 +445,11 @@ class RestApi extends EVASBaseIngressSurface {
 		try {
 			await next();
 		} catch (error) {
+			const userErrorMessage = await this.#translateError?.(ctxt, error);
+
 			ctxt.type = 'application/json; charset=utf-8';
 			ctxt.status = error?.status ?? 422;
-			ctxt.body = error?.message;
+			ctxt.body = userErrorMessage;
 		}
 	}
 
@@ -468,6 +470,11 @@ class RestApi extends EVASBaseIngressSurface {
 				id: ctxt?.state?.user?.id,
 				name: `${ctxt?.state?.user?.['first_name']} ${ctxt?.state?.user?.['last_name']}`,
 				role: ctxt?.session?.passport?.user?.['role'] ?? '???'
+			},
+
+			device: {
+				type: ctxt?.state?.device?.type,
+				model: ctxt?.state?.device?.model
 			},
 
 			'request-meta': {
@@ -523,7 +530,10 @@ class RestApi extends EVASBaseIngressSurface {
 				name: `${ctxt?.state?.user?.['first_name'] ?? '???'} ${
 					ctxt?.state?.user?.['last_name'] ?? '???'
 				}`,
-				role: ctxt?.session?.passport?.user?.['role'] ?? '???'
+				role:
+					ctxt?.session?.passport?.user?.['role'] ??
+					ctxt?.state?.user?.['role'] ??
+					'???'
 			};
 		}
 
@@ -553,12 +563,7 @@ class RestApi extends EVASBaseIngressSurface {
 			message:
 				logMessageMeta?.error?.message ?? statusCodes?.[ctxt?.status],
 			responseMessage:
-				((logMessageMeta?.error?.message ?? '')?.startsWith?.(
-					'ApiMatcher'
-				)
-					? logMessageMeta?.error?.cause?.message
-					: logMessageMeta?.error?.message) ??
-				statusCodes?.[ctxt?.status]
+				statusCodes?.[logMessageMeta?.error?.status ?? ctxt?.status]
 		};
 
 		logMessageMeta['data']['payload'] = Buffer?.isBuffer?.(ctxt?.body)
@@ -567,7 +572,7 @@ class RestApi extends EVASBaseIngressSurface {
 
 		logMessageMeta['error'] ??= ctxt?.status >= 400;
 
-		let throwableError;
+		let throwableError = undefined;
 		if (logMessageMeta?.['error'] instanceof Error) {
 			throwableError = logMessageMeta?.['error'];
 			logMessageMeta['error'] = errorSerializer?.(
@@ -581,6 +586,33 @@ class RestApi extends EVASBaseIngressSurface {
 
 		if (!throwableError) return;
 		throw throwableError;
+	}
+
+	async #translateError(ctxt, error) {
+		const i18nRepository =
+			await this?.iocContainer?.resolve?.('MessageI18N');
+
+		const userLocale =
+			ctxt?.body?.locale ??
+			ctxt?.state?.user?.['primary_locale'] ??
+			'en-IN';
+
+		if (error?.code?.startsWith('EVASERVER')) {
+			error.code = error?.code?.replace('EVASERVER::', '');
+		} else {
+			error.code = 'UNKNOWN_ERROR';
+		}
+
+		const translatedMessage = await i18nRepository?.translate?.(
+			error?.code,
+			userLocale,
+			{
+				user: ctxt?.state?.user,
+				body: ctxt?.body
+			}
+		);
+
+		return translatedMessage;
 	}
 
 	async #serverConnection(socket) {

@@ -83,6 +83,7 @@ export class Locale extends BaseSurface {
 		const baseRoutes = await super._registerSurface?.();
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'POST',
 			path: '/create',
 			middlewares: [await this?._rbac?.('registered')],
@@ -90,6 +91,7 @@ export class Locale extends BaseSurface {
 		});
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'PATCH',
 			path: '/update',
 			middlewares: [await this?._rbac?.('registered')],
@@ -97,6 +99,7 @@ export class Locale extends BaseSurface {
 		});
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'DEL',
 			path: '/delete/:localeId',
 			middlewares: [await this?._rbac?.('registered')],
@@ -143,10 +146,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #createLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeStatus = await apiRegistry?.execute?.('CREATE_LOCALE', {
 			user: ctxt?.state?.user,
@@ -173,10 +172,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #updateLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeUpdateStatus = await apiRegistry?.execute?.(
 			'UPDATE_LOCALE',
@@ -206,10 +201,6 @@ export class Locale extends BaseSurface {
 	 *
 	 */
 	async #deleteLocale(ctxt) {
-		if (!ctxt?.isAuthenticated?.()) {
-			throw new Error(`No active session`);
-		}
-
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const localeDeleteStatus = await apiRegistry?.execute?.(
 			'DELETE_LOCALE',

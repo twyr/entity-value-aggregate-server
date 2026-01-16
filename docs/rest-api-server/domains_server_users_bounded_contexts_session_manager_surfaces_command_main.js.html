@@ -80,24 +80,24 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async _registerSurface() {
-		const authRepository =
-			await this?.domainInterface?.iocContainer?.resolve?.('Auth');
 		const baseRoutes = await super._registerSurface?.();
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'POST',
 			path: '/generate-otp',
 			handler: this.#generateOtp?.bind?.(this)
 		});
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'POST',
 			path: '/login',
-			middlewares: [authRepository?.authenticate?.('server-user-local')],
 			handler: this.#login?.bind?.(this)
 		});
 
 		baseRoutes?.push?.({
+			version: 1,
 			httpMethod: 'POST',
 			path: '/logout',
 			middlewares: [await this?._rbac?.('registered')],
@@ -188,10 +188,26 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #login(ctxt) {
+		// Sanity check...
 		if (ctxt?.isAuthenticated?.()) {
-			throw new Error(`Active session already exists`);
+			const userError = new Error(
+				`EVASERVER::SERVER_USERS::SESSION_MANAGER::EXISTING_ACTIVE_SESSION`
+			);
+			userError.code =
+				'EVASERVER::SERVER_USERS::SESSION_MANAGER::EXISTING_ACTIVE_SESSION';
+
+			throw userError;
 		}
 
+		// Step 1: Login...
+		const authRepository =
+			await this?.domainInterface?.iocContainer?.resolve?.('Auth');
+		const authenticator =
+			authRepository?.authenticate?.('server-user-local');
+
+		await authenticator?.(ctxt, async () => {});
+
+		// Step 2: Post Login Processing...
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const postLoginStatus = await apiRegistry?.execute?.('LOGIN', {
 			user: ctxt?.state?.user,
@@ -225,22 +241,30 @@ export class Main extends BaseSurface {
 	 *
 	 */
 	async #logout(ctxt) {
-		if (!ctxt.isAuthenticated()) {
-			throw new Error(`No active session`);
-		}
-
 		const userId = ctxt?.state?.user?.id;
+		const userLocale = ctxt?.state?.user?.['primary_locale'] ?? 'en-IN';
 		const userRole = ctxt?.session?.passport?.user?.['role'];
-		const userName = `${ctxt?.state?.user?.['first_name']} ${ctxt?.state?.user?.['last_name']}`;
+
+		const firstName = ctxt?.state?.user?.['first_name'];
+		const lastName = ctxt?.state?.user?.['last_name'];
+		const userName = `${firstName} ${lastName}`;
 
 		await ctxt?.logout?.();
 
 		const apiRegistry = this?.domainInterface?.apiRegistry;
 		const logoutStatus = await apiRegistry?.execute?.('LOGOUT', {
 			userId: userId,
-			userRole: userRole,
-			userName: userName
+			userName: userName,
+			userLocale: userLocale
 		});
+
+		// Reset this for audit log purposes
+		ctxt.state.user = {
+			id: userId,
+			role: userRole,
+			first_name: firstName,
+			last_name: lastName
+		};
 
 		ctxt.status = logoutStatus?.status;
 		ctxt.body = logoutStatus?.body;
