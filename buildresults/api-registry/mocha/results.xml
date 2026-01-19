@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="Mocha Tests" time="0.413" tests="1" failures="0">
-	<testsuite name="Root Suite" timestamp="2026-01-16T09:08:18" tests="0" time="0.000" failures="0">
+<testsuites name="Mocha Tests" time="0.421" tests="1" failures="0">
+	<testsuite name="Root Suite" timestamp="2026-01-19T06:39:24" tests="0" time="0.000" failures="0">
 	</testsuite>
-	<testsuite name="API Registry Test Cases" timestamp="2026-01-16T09:08:18" tests="1" file="/home/vish/Work/twyr/entity-value-aggregate-server/packages/api-registry/tests/index.spec.cjs" time="0.413" failures="0">
-		<testcase name="API Registry Test Cases Global Snooze for 400ms" time="0.410" classname="Global Snooze for 400ms">
+	<testsuite name="API Registry Test Cases" timestamp="2026-01-19T06:39:24" tests="1" file="/home/vish/Work/twyr/entity-value-aggregate-server/packages/api-registry/tests/index.spec.cjs" time="0.418" failures="0">
+		<testcase name="API Registry Test Cases Global Snooze for 400ms" time="0.416" classname="Global Snooze for 400ms">
 		</testcase>
 	</testsuite>
 </testsuites>
