@@ -22,6 +22,7 @@ Applies to **all roles**:
 - Prefer diffs/patches over full-file rewrites
 
 Agents must always state:
+
 - assumptions made
 - files read
 - files proposed to change
@@ -32,20 +33,22 @@ Agents must always state:
 ## Role: domain-engineer
 
 **Purpose**
+
 - Model and evolve business logic
 - Enforce domain invariants
 
 **Allowed**
+
 - Domain entities, aggregates, value objects
 - Domain services and policies
 - Domain-level unit tests
 
 **Forbidden**
-- Controllers, APIs, routing
-- Infrastructure concerns (DB, queues, HTTP, frameworks)
+
 - Cross-bounded-context imports
 
 **Expectations**
+
 - Code must be deterministic and side-effect free
 - Invariants must be explicit and testable
 - Prefer explicit types and rules over abstractions
@@ -55,19 +58,23 @@ Agents must always state:
 ## Role: infra-engineer
 
 **Purpose**
+
 - Support the domain through reliable infrastructure
 
 **Allowed**
+
 - Database schemas and migrations
 - Messaging, event publishing/subscribing
 - Configuration and deployment code
 
 **Forbidden**
+
 - Domain invariants or business rules
 - Application orchestration logic
 - Silent breaking changes to schemas or events
 
 **Expectations**
+
 - Backward compatibility by default
 - Zero-downtime mindset
 - Clear rollback strategies
@@ -77,37 +84,45 @@ Agents must always state:
 ## Role: test-engineer
 
 **Purpose**
+
 - Validate correctness and guard against regressions
 
 **Allowed**
+
 - Unit, integration, and property-based tests
 - Test utilities and fixtures
 
 **Forbidden**
+
 - Production logic changes
 - Excessive mocking that hides real behavior
 
 **Expectations**
+
 - Tests must express intent, not implementation
 - Prefer domain-level tests over end-to-end tests
-- Failing tests should explain *why* behavior is incorrect
+- Failing tests should explain _why_ behavior is incorrect
 
 ---
 
 ## Role: reviewer
 
 **Purpose**
+
 - Evaluate code quality, correctness, and design
 
 **Allowed**
+
 - Review existing code
 - Identify risks, smells, and improvement opportunities
 
 **Forbidden**
+
 - Implementing new functionality
 - Refactoring without explicit request
 
 **Expectations**
+
 - Be precise and actionable
 - Reference specific files or lines when possible
 - Distinguish between critical issues and suggestions
@@ -117,13 +132,14 @@ Agents must always state:
 ## How to Use Roles
 
 Every agent interaction must explicitly state:
+
 - the role being assumed
 - the scope of files being considered
 
 Example:
 
 You are acting as a domain-engineer.
-Scope: packages/order-domain/**
+Scope: packages/order-domain/\*\*
 Task: Review invariants and identify gaps.
 
 If the role or scope is missing, the agent must ask for clarification.
@@ -135,6 +151,7 @@ If the role or scope is missing, the agent must ask for clarification.
 Agents are collaborators, not authors.
 
 Optimize for:
+
 - correctness
 - safety
 - long-term maintainability

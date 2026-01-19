@@ -37,12 +37,15 @@ Agents must never assume permission to modify code.
 Every AI-assisted task must follow this loop:
 
 ### 1. Read & Understand
+
 The agent must:
+
 - Read `PROJECT.md`
 - Read the relevant `AGENTS.md`
 - Read only the files explicitly provided or approved
 
 The agent must then explain:
+
 - what it understands
 - what it does NOT understand
 - assumptions it would otherwise make
@@ -50,6 +53,7 @@ The agent must then explain:
 ---
 
 ### 2. Propose a Plan
+
 Before writing code, the agent must propose a plan that includes:
 
 - Goal of the change
@@ -63,7 +67,9 @@ No code may be written at this stage.
 ---
 
 ### 3. Human Confirmation
+
 A human must explicitly approve:
+
 - the plan
 - the scope
 - any exceptions to safety rules
@@ -73,6 +79,7 @@ Without confirmation, the agent must stop.
 ---
 
 ### 4. Implementation
+
 Only after approval may the agent:
 
 - implement the agreed plan
@@ -83,6 +90,7 @@ Only after approval may the agent:
 ---
 
 ### 5. Verification
+
 Every implementation must include:
 
 - how correctness is verified (tests, checks, reasoning)
@@ -104,14 +112,14 @@ Example:
 Scope:
 
 packages/framework-classes/**
-servers/rest-api-server/src/**
-
+servers/rest-api-server/source/**
 
 ---
 
 ## Change Size Rules
 
 By default:
+
 - Maximum 2–3 files per change
 - No deletions without explicit instruction
 - No new dependencies without approval
@@ -135,10 +143,12 @@ Because this system is event-driven:
 ## Role Discipline
 
 Each AI interaction must explicitly state:
+
 - the role being assumed (see `AGENTS.md`)
 - the scope of files being considered
 
 If a task requires multiple roles:
+
 - Stop
 - Split the task into multiple steps
 - Execute each step with a single role
@@ -161,11 +171,13 @@ If any of these are missing, the response is incomplete.
 ## Guiding Principle
 
 AI assistance exists to:
+
 - reduce cognitive load
 - increase correctness
 - accelerate well-understood work
 
 It must never:
+
 - bypass design thinking
 - weaken architectural boundaries
 - trade long-term quality for short-term speed

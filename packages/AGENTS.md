@@ -17,17 +17,10 @@ If another role is intended, it must be stated explicitly.
 
 ---
 
-## Additional Local Rules
+## Responsibilities
 
-- Domain code must be:
-  - deterministic
-  - framework-agnostic
-  - side-effect free
-- No direct dependency on:
-  - HTTP frameworks
-  - databases
-  - message brokers
-- Time, randomness, and I/O must be abstracted
+- Packages are intended to be in-memory functionality only
+- Code must be deterministic and side-effect free
 
 ---
 
@@ -41,8 +34,5 @@ If another role is intended, it must be stated explicitly.
 
 ## Common Mistakes to Avoid
 
-- Introducing application workflows into domain code
-- Leaking infrastructure concerns into entities or services
-- Over-abstracting simple domain rules
-
-If unsure whether logic belongs here, it probably does **not**.
+- Introducing application workflows into packages
+- Adding I/O, serialization, or transport logic
