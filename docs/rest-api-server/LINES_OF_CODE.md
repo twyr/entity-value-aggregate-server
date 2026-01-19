@@ -1,4 +1,4 @@
-cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1194.9 files/s, 244806.9 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.07 s (1016.0 files/s, 208148.4 lines/s)
 --- | ---
 
 File|blank|comment|code
@@ -75,7 +75,7 @@ File|blank|comment|code
 ./source/domains/server_users/templates/email/update-server-user.ejs|2|0|4
 --------|--------|--------|--------
 SUM:|1352|5168|7821
-cloc|github.com/AlDanial/cloc v 1.96  T=0.06 s (1194.9 files/s, 244806.9 lines/s)
+cloc|github.com/AlDanial/cloc v 1.96  T=0.07 s (1016.0 files/s, 208148.4 lines/s)
 --- | ---
 
 Language|files|blank|comment|code
