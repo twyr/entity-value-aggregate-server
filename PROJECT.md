@@ -31,7 +31,7 @@ The `packages` folder contains 4 modules:
 Under the `servers/rest-api-server/` directory, the code is organized into:
 
 - **source/domains/**: all interactions by a specific type of User lives here.
-  The `patients` domain is for regular users of the system, for example.
+  The `server_users` domain is for regular users of the system, for example.
 
 - **source/repositories/**: data access layer implementations, one per external
   system - database, cache, etc.
